@@ -1,7 +1,7 @@
 #part1
 import numpy as np
 import random
-
+from collections import Counter
 #define datapaths 
 en_train_path = "EN/train"
 en_dev_in_path = "EN/dev.in"
@@ -18,17 +18,31 @@ N = 7  #no of unique labels
 #add START and END to the labels 
 labels = {"START": 0,
           "O": 1,
-          "B-positive": 2,
-          "I-positive": 3,
-          "B-neutral": 4,
-          "I-neutral": 5,
-          "B-negative": 6,
-          "I-negative": 7,
+          "B-INTJ": 2,
+          "I-INTJ": 3,
+          "B-NP": 4,
+          "I-NP": 5,
+          "B-PP": 6,
+          "I-PP": 7,
           "END": 8}
 labels_list = ["START", "O", "B-positive", "I-positive", "B-neutral", "I-neutral", "B-negative", "I-negative", "END"]
 
 # Read training data
 def read_training_data(path):
+    results = []
+    with open(path, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+        for line in lines:
+            if len(line.strip().rsplit(" ", 1)) == 2:
+                token, label = line.strip().rsplit(" ", 1)
+                print(label)
+              
+                results.append((token, labels[label]))
+            else:
+                continue
+    return results
+
+    '''
     results = []
     with open(path, "r", encoding="utf-8") as file:
         for line in file:
@@ -38,7 +52,8 @@ def read_training_data(path):
             token, label = line.rsplit(" ", 1)
             if label in labels:
                 results.append((token, labels[label]))
-    return results
+    return results'''
+    
 
 
 
@@ -68,6 +83,7 @@ def calculate_number_of_labels(data):
         else:
             label_counts[label] = 1
     return label_counts
+    #return Counter(elem[1] for elem in data)
 
 
 def get_all_tokens(data):
@@ -76,10 +92,11 @@ def get_all_tokens(data):
         if item[0] not in unique_tokens:
             unique_tokens.append(item[0])
     return unique_tokens
+    #return list(set(item[0] for item in data))
 
 
 def calculate_emission_parameters(data, all_tokens, k=1.0):
-
+    print(data)
     # the extra +1 column is for #UNK# tokens
     emission_counts = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)   #creates an NP array where rows - labels, columns - unique tokens
     emission_parameters = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)
@@ -93,7 +110,9 @@ def calculate_emission_parameters(data, all_tokens, k=1.0):
     # calculate count(label)
     label_counts = []
     label_counts_dict = calculate_number_of_labels(data)    # a dictionary with the format : {label:count} , i.e, each key is a label which has its count as the corresponding value
+    print(label_counts_dict)
     sorted_labels = sorted(label_counts_dict.keys())
+    print(sorted_labels)
     for label in sorted_labels:
         label_counts.append(label_counts_dict[label])
     label_counts = np.array(label_counts)                # in increasing order of label (from 0 to 8), contains (label:label count)
