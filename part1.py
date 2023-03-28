@@ -14,10 +14,9 @@ fr_dev_in_path = "FR/dev.in"
 fr_dev_out_path ="FR/dev.out"
 fr_dev_p1_out_path = "FR/dev.p1.out"
 
-N_EN = 18 #no of unique labels 
-N_FR = 7
-#add START and END to the labels 
 
+N_FR = 7 #no of unique labels in FR 
+#add START and END to the labels 
 labels_FR = {"START":0,
           "O": 1,
           "B-positive":2,
@@ -28,6 +27,9 @@ labels_FR = {"START":0,
           "I-negative": 7,
           "END": 8}
 labels_list_FR = ["START", "O", "B-positive", "I-positive", "B-neutral", "I-neutral", "B-negative", "I-negative", "END"]
+
+N_EN = 18 #no of unique labels in EN 
+#add START and END to labels 
 labels_EN = {"START": 0,
           "O": 1,
           "B-ADJP":2,
@@ -43,7 +45,7 @@ labels_EN = {"START": 0,
           "B-PP": 12,
           "I-PP": 13,
           "B-PRT":14,
-          #"I-PRT":15,
+          #"I-PRT":15, 
           "B-SBAR":15,
           "I-SBAR":16,
           "B-VP": 17,
@@ -67,8 +69,6 @@ def read_training_data(path, labels):
 
     
 
-
-
 # Read dev.in data
 def read_dev_in_data(path):
     with open(path, 'r', encoding='utf-8') as file:
@@ -86,8 +86,7 @@ def read_dev_out_data(path, labels):
                 results.append((token, labels[label]))
     return results
 
-def calculate_number_of_labels(data):
-   
+def calculate_label_counts(data):
     label_counts = {}
     for elem in data:
         label = elem[1]
@@ -100,7 +99,7 @@ def calculate_number_of_labels(data):
    
 
 
-def get_all_tokens(data):
+def all_tokens(data):
     unique_tokens = []
     for item in data:
         if item[0] not in unique_tokens:
@@ -110,7 +109,9 @@ def get_all_tokens(data):
    
 
 def calculate_emission_parameters(data, all_tokens, N, k=1.0):
-    print("all tokens", len(all_tokens), "N", N)
+
+    print("number of unique tokens", len(all_tokens), "N", N)
+
     # the extra +1 column is for #UNK# tokens
     emission_counts = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)   #creates an NP array where rows - labels, columns - unique tokens
     emission_parameters = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)
@@ -123,7 +124,7 @@ def calculate_emission_parameters(data, all_tokens, N, k=1.0):
    
     # calculate count(label)
     label_counts = []
-    label_counts_dict = calculate_number_of_labels(data)    # a dictionary with the format : {label:count} , i.e, each key is a label which has its count as the corresponding value
+    label_counts_dict = calculate_label_counts(data)    # a dictionary with the format : {label:count} , i.e, each key is a label which has its count as the corresponding value
    
     sorted_labels = sorted(label_counts_dict.keys())
     print("sorted labels", sorted_labels)
@@ -133,10 +134,6 @@ def calculate_emission_parameters(data, all_tokens, N, k=1.0):
     label_counts = np.array(label_counts)                # in increasing order of label (from 0 to 8), contains (label:label count)
     print("label_counts",label_counts)
 
-
-
-  
-    print("label_counts",label_counts)
     # calculate count(label->token)/count(label) for each label 
     for index, value in enumerate(emission_counts): 
         emission_parameters[index] = emission_counts[index] / (label_counts[index] + k)  #index - each row of 2d array
@@ -145,8 +142,8 @@ def calculate_emission_parameters(data, all_tokens, N, k=1.0):
     return emission_parameters  #each value in this array gives the probability e(x|y) -> token given a label
 
 
-# Get tag from word
-def get_label_from_token(token, emission_parameters, all_tokens, labels_list):
+# Get label from token
+def label_from_token(token, emission_parameters, all_tokens, labels_list):
     if token in all_tokens:
         column_to_consider = emission_parameters[:, all_tokens.index(token)]   
     else:
@@ -160,42 +157,49 @@ def get_label_from_token(token, emission_parameters, all_tokens, labels_list):
     return labels_list[x]
 
 
-def write_prediction_output_to_file(language):
-    if language == "EN":
-        # Conduct training/supervised learning (M-Step)
+def predict_output(file):
+
+    if file == "EN":
+        # M-step 
         train_data = read_training_data(en_train_path, labels_EN)
-        all_tokens = get_all_tokens(train_data)
+        all_tokens = all_tokens(train_data)
         emission_parameters = calculate_emission_parameters(train_data, all_tokens, N_EN)
 
-        # Execute testing/decoding (E-Step)
+        # E-step 
         predicted_results = []
         test_data = read_dev_in_data(en_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + get_label_from_token(token, emission_parameters, all_tokens, labels_list_EN ))
+                predicted_results.append(token + " " + label_from_token(token, emission_parameters, all_tokens, labels_list_EN ))
             else:
                 predicted_results.append("")
         with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
             for line in predicted_results:
                 file.write(line + "\n")
 
-    elif language == "FR":
-        # Conduct training/supervised learning (M-Step)
+
+
+    elif file == "FR":
+        #M-Step
         train_data = read_training_data(fr_train_path, labels_FR)
-        all_tokens = get_all_tokens(train_data)
+        all_tokens = all_tokens(train_data)
         emission_parameters = calculate_emission_parameters(train_data, all_tokens, N_FR)
 
-        # Execute testing/decoding (E-Step)
+
+        #E-Step
         predicted_results = []
         test_data = read_dev_in_data(fr_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + get_label_from_token(token, emission_parameters, all_tokens, labels_list_FR))
+                predicted_results.append(token + " " + label_from_token(token, emission_parameters, all_tokens, labels_list_FR))
             else:
                 predicted_results.append("")
         with open(fr_dev_p1_out_path, "w+", encoding="utf-8") as file:
             for line in predicted_results:
                 file.write(line + "\n")
 
-for language in ["EN", "FR"]:
-    write_prediction_output_to_file(language)
+
+predict_output("EN")
+predict_output("FR")
+
+
