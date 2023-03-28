@@ -15,7 +15,7 @@ fr_dev_out_path ="FR/dev.out"
 fr_dev_p1_out_path = "FR/dev.p1.out"
 
 
-N_FR = 7 #no of unique labels in FR 
+N_FR = 7 #no of unique labels in FR train dataset 
 #add START and END to the labels 
 labels_FR = {"START":0,
           "O": 1,
@@ -28,7 +28,7 @@ labels_FR = {"START":0,
           "END": 8}
 labels_list_FR = ["START", "O", "B-positive", "I-positive", "B-neutral", "I-neutral", "B-negative", "I-negative", "END"]
 
-N_EN = 18 #no of unique labels in EN 
+N_EN = 18 #no of unique labels in EN train dataset 
 #add START and END to labels 
 labels_EN = {"START": 0,
           "O": 1,
