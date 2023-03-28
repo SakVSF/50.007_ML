@@ -14,18 +14,30 @@ fr_dev_in_path = "FR/dev.in"
 fr_dev_out_path ="FR/dev.out"
 fr_dev_p1_out_path = "FR/dev.p1.out"
 
-N = 7  #no of unique labels 
+N = 18 #no of unique labels 
 #add START and END to the labels 
 labels = {"START": 0,
           "O": 1,
-          "B-INTJ": 2,
-          "I-INTJ": 3,
-          "B-NP": 4,
-          "I-NP": 5,
-          "B-PP": 6,
-          "I-PP": 7,
-          "END": 8}
-labels_list = ["START", "O", "B-positive", "I-positive", "B-neutral", "I-neutral", "B-negative", "I-negative", "END"]
+          "B-ADJP":2,
+          "I-ADJP":3,
+          "B-ADVP":4,
+          "I-ADVP":5,
+          "B-CONJP":6,
+          "I-CONJP":7,
+          "B-INTJ": 8,
+          "I-INTJ": 9,
+          "B-NP": 10,
+          "I-NP": 11,
+          "B-PP": 12,
+          "I-PP": 13,
+          "B-PRT":14,
+          #"I-PRT":15,
+          "B-SBAR":15,
+          "I-SBAR":16,
+          "B-VP": 17,
+          "I-VP":18,
+          "END": 19}
+labels_list = ["START","O", "B-ADJP", "I-ADJP","B-ADVP","I-ADVP","B-CONJP","I-CONJP","B-INTJ","I-INTJ","B-NP","I-NP", "B-PP","I-PP","B-PRT", "B-SBAR","I-SBAR","B-VP","I-VP","END"]
 
 # Read training data
 def read_training_data(path):
@@ -35,7 +47,7 @@ def read_training_data(path):
         for line in lines:
             if len(line.strip().rsplit(" ", 1)) == 2:
                 token, label = line.strip().rsplit(" ", 1)
-                print(label)
+                #print(label)
               
                 results.append((token, labels[label]))
             else:
@@ -75,28 +87,32 @@ def read_dev_out_data(path):
     return results
 
 def calculate_number_of_labels(data):
-    label_counts = {}
+    '''label_counts = {}
     for elem in data:
         label = elem[1]
         if label in label_counts:
             label_counts[label] += 1
         else:
             label_counts[label] = 1
+    print("label_counts:", label_counts)
     return label_counts
-    #return Counter(elem[1] for elem in data)
+    '''
+    return Counter(elem[1] for elem in data)
 
 
 def get_all_tokens(data):
+    '''
     unique_tokens = []
     for item in data:
         if item[0] not in unique_tokens:
             unique_tokens.append(item[0])
     return unique_tokens
-    #return list(set(item[0] for item in data))
+    '''
+    return list(set(item[0] for item in data))
 
 
 def calculate_emission_parameters(data, all_tokens, k=1.0):
-    print(data)
+    print("all tokens", len(all_tokens), "N", N)
     # the extra +1 column is for #UNK# tokens
     emission_counts = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)   #creates an NP array where rows - labels, columns - unique tokens
     emission_parameters = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)
@@ -106,18 +122,23 @@ def calculate_emission_parameters(data, all_tokens, k=1.0):
         emission_counts[label - 1][all_tokens.index(token)] += 1    #keep a count of how many times each token appears for each label in the data list
     #last column filled with k value for UNK token
     emission_counts[:, -1] = [k] * N
-
+    '''
     # calculate count(label)
     label_counts = []
     label_counts_dict = calculate_number_of_labels(data)    # a dictionary with the format : {label:count} , i.e, each key is a label which has its count as the corresponding value
-    print(label_counts_dict)
+   
     sorted_labels = sorted(label_counts_dict.keys())
-    print(sorted_labels)
+    print("sorted labels", sorted_labels)
     for label in sorted_labels:
+        print("adding", label, ":",label_counts_dict[label] )
         label_counts.append(label_counts_dict[label])
     label_counts = np.array(label_counts)                # in increasing order of label (from 0 to 8), contains (label:label count)
-    print(label_counts)
+    print("label_counts",label_counts)
 
+'''
+
+    label_counts = np.array(list(val[1] for val in sorted(calculate_number_of_labels(data).items())))
+    print("label_counts",label_counts)
     # calculate count(label->token)/count(label) for each label 
     for index, value in enumerate(emission_counts): 
         emission_parameters[index] = emission_counts[index] / (label_counts[index] + k)  #index - each row of 2d array
@@ -127,7 +148,7 @@ def calculate_emission_parameters(data, all_tokens, k=1.0):
 
 
 # Get tag from word
-def get_label_from_token(token, emission_parameters, all_tokens, ):
+def get_label_from_token(token, emission_parameters, all_tokens):
     if token in all_tokens:
         column_to_consider = emission_parameters[:, all_tokens.index(token)]   
     else:
@@ -152,7 +173,7 @@ def write_prediction_output_to_file(language):
         test_data = read_dev_in_data(en_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + get_label_from_token(token, all_tokens, emission_parameters))
+                predicted_results.append(token + " " + get_label_from_token(token, emission_parameters, all_tokens ))
             else:
                 predicted_results.append("")
         with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
@@ -170,7 +191,7 @@ def write_prediction_output_to_file(language):
         test_data = read_dev_in_data(fr_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + get_label_from_token(token, all_tokens, emission_parameters))
+                predicted_results.append(token + " " + get_label_from_token(token, emission_parameters, all_tokens))
             else:
                 predicted_results.append("")
         with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
