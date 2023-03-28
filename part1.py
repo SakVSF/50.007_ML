@@ -41,20 +41,7 @@ labels_list = ["START","O", "B-ADJP", "I-ADJP","B-ADVP","I-ADVP","B-CONJP","I-CO
 
 # Read training data
 def read_training_data(path):
-    results = []
-    with open(path, "r", encoding="utf-8") as file:
-        lines = file.readlines()
-        for line in lines:
-            if len(line.strip().rsplit(" ", 1)) == 2:
-                token, label = line.strip().rsplit(" ", 1)
-                #print(label)
-              
-                results.append((token, labels[label]))
-            else:
-                continue
-    return results
-
-    '''
+    
     results = []
     with open(path, "r", encoding="utf-8") as file:
         for line in file:
@@ -64,7 +51,8 @@ def read_training_data(path):
             token, label = line.rsplit(" ", 1)
             if label in labels:
                 results.append((token, labels[label]))
-    return results'''
+    return results
+
     
 
 
@@ -87,7 +75,8 @@ def read_dev_out_data(path):
     return results
 
 def calculate_number_of_labels(data):
-    '''label_counts = {}
+   
+    label_counts = {}
     for elem in data:
         label = elem[1]
         if label in label_counts:
@@ -96,20 +85,17 @@ def calculate_number_of_labels(data):
             label_counts[label] = 1
     print("label_counts:", label_counts)
     return label_counts
-    '''
-    return Counter(elem[1] for elem in data)
+   
 
 
 def get_all_tokens(data):
-    '''
     unique_tokens = []
     for item in data:
         if item[0] not in unique_tokens:
             unique_tokens.append(item[0])
     return unique_tokens
-    '''
-    return list(set(item[0] for item in data))
-
+  
+   
 
 def calculate_emission_parameters(data, all_tokens, k=1.0):
     print("all tokens", len(all_tokens), "N", N)
@@ -122,7 +108,7 @@ def calculate_emission_parameters(data, all_tokens, k=1.0):
         emission_counts[label - 1][all_tokens.index(token)] += 1    #keep a count of how many times each token appears for each label in the data list
     #last column filled with k value for UNK token
     emission_counts[:, -1] = [k] * N
-    '''
+   
     # calculate count(label)
     label_counts = []
     label_counts_dict = calculate_number_of_labels(data)    # a dictionary with the format : {label:count} , i.e, each key is a label which has its count as the corresponding value
@@ -135,9 +121,9 @@ def calculate_emission_parameters(data, all_tokens, k=1.0):
     label_counts = np.array(label_counts)                # in increasing order of label (from 0 to 8), contains (label:label count)
     print("label_counts",label_counts)
 
-'''
 
-    label_counts = np.array(list(val[1] for val in sorted(calculate_number_of_labels(data).items())))
+
+  
     print("label_counts",label_counts)
     # calculate count(label->token)/count(label) for each label 
     for index, value in enumerate(emission_counts): 
@@ -156,6 +142,7 @@ def get_label_from_token(token, emission_parameters, all_tokens):
         
     # Get the indices of maximum values in the array
     max_indices = np.where(column_to_consider == column_to_consider.max())[0]
+
     # Randomly choose an index from the maximum indices
     x = random.choice(max_indices) + 1
     return labels_list[x]
@@ -197,5 +184,6 @@ def write_prediction_output_to_file(language):
         with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
             for line in predicted_results:
                 file.write(line + "\n")
+                
 for language in ["EN", "FR"]:
     write_prediction_output_to_file(language)
