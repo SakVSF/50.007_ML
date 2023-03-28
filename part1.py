@@ -99,7 +99,7 @@ def calculate_label_counts(data):
    
 
 
-def all_tokens(data):
+def get_tokens(data):
     unique_tokens = []
     for item in data:
         if item[0] not in unique_tokens:
@@ -152,54 +152,51 @@ def label_from_token(token, emission_parameters, all_tokens, labels_list):
     # Get the indices of maximum values in the array
     max_indices = np.where(column_to_consider == column_to_consider.max())[0]
 
-    # Randomly choose an index from the maximum indices
+    # Randomly choosing an index from the maximum indices
     x = random.choice(max_indices) + 1
     return labels_list[x]
 
 
 def predict_output(file):
-
     if file == "EN":
-        # M-step 
+   
         train_data = read_training_data(en_train_path, labels_EN)
-        all_tokens = all_tokens(train_data)
+        all_tokens = get_tokens(train_data)
         emission_parameters = calculate_emission_parameters(train_data, all_tokens, N_EN)
 
-        # E-step 
-        predicted_results = []
+        predictions = []
         test_data = read_dev_in_data(en_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + label_from_token(token, emission_parameters, all_tokens, labels_list_EN ))
+                label = label_from_token(token, emission_parameters, all_tokens, labels_list_EN)
+                predictions.append(token + " " +  label )
             else:
-                predicted_results.append("")
+                predictions.append("")
+
         with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
-            for line in predicted_results:
+            for line in predictions:
                 file.write(line + "\n")
 
 
 
     elif file == "FR":
-        #M-Step
         train_data = read_training_data(fr_train_path, labels_FR)
-        all_tokens = all_tokens(train_data)
+        all_tokens = get_tokens(train_data)
         emission_parameters = calculate_emission_parameters(train_data, all_tokens, N_FR)
 
-
-        #E-Step
-        predicted_results = []
+        predictions = []
         test_data = read_dev_in_data(fr_dev_in_path)
         for token in test_data:
             if token:
-                predicted_results.append(token + " " + label_from_token(token, emission_parameters, all_tokens, labels_list_FR))
+                label = label_from_token(token, emission_parameters, all_tokens, labels_list_FR)
+                predictions.append(token + " " + label )
             else:
-                predicted_results.append("")
+                predictions.append("")
+
         with open(fr_dev_p1_out_path, "w+", encoding="utf-8") as file:
-            for line in predicted_results:
+            for line in predictions:
                 file.write(line + "\n")
 
 
 predict_output("EN")
 predict_output("FR")
-
-
