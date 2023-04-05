@@ -1,0 +1,287 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr  3 00:50:27 2023
+
+@author: User
+"""
+from utilities import * 
+import math
+import numpy as np
+import random
+from collections import Counter
+from part1 import *
+
+
+np.seterr(under="warn", divide="ignore")
+
+def estimate_transition_parameters(training_set, N):
+    """
+    This function estimates the transition parameters from the training set using MLE.
+
+    Arguments: Training_set (list): A list of sentences, where each sentence is a list of (word, tag) tuples.
+
+    Returns dict: A dictionary containing the transition parameters, where the keys are (tag1, tag2) tuples and
+    the values are the estimated transition probabilities.
+    
+    Instructions to test models: 1) To run after part 1 to give the dev.p1.out files
+                                 2) Place evalResult.py script in the same directory as your EN and FR dev.out and dev.prediction files.
+                                 3) In the terminal or command prompt, navigate to the directory where the files are located.
+                                 4) Run the following command: 'python evalResult.py dev.out dev.prediction'
+                                 5) It wil calculate precision, recall, and F-score. So it will test both the Viterbi algorithm and the Python function
+                                    that estimates the transition parameters.
+    """
+  
+    # Calculating the estimated transition probabilities
+    transition_probs = np.zeros((N+2, N+2),  dtype=np.longdouble)
+    transition_counts = np.zeros((N+2, N+2),  dtype=np.longdouble)
+    label_counts = [0]*(N+2)
+
+    #print(training_set[len(training_set)][1])
+    count=0
+    for i in range(1, len(training_set)):
+        prev_tag = training_set[i-1][1]
+        curr_tag = training_set[i][1]
+        transition_counts[prev_tag][curr_tag] += 1
+        label_counts[prev_tag] += 1
+
+    label_counts[-1]=+1 #for STOP tag
+    #print(transition_counts[1][19])
+    for i in range(len(label_counts)):
+        transition_probs[i][:] = transition_counts[i][:]/label_counts[i]
+        #print("For",i,transition_probs[i][:])
+    
+    #print("Label counts", label_counts)
+    print(transition_probs)
+    return transition_probs  #20*20 array (20 rows and 20 columns. No of tags =19, 2 extra tags are START AND STOP)
+
+  
+
+def viterbi(sentence, tags, trans_prob, emission_prob, all_tokens):
+    """
+    Runs the Viterbi algorithm on a sentence with the given model parameters.
+
+    Arguments: sentence (list): A list of words in the sentence.
+               tags (list): A list of possible tags.
+               start_prob (dict): A dictionary containing the probabilities of each tag starting a sentence.
+               trans_prob (dict): A dictionary containing the transition probabilities between each pair of tags.
+               emission_prob (dict): A dictionary containing the emission probabilities of each word for each tag.
+    Returns list: A list of the most likely tags for the words in the sentence.
+    Instructions to test models: 1) To run after part 1 to give the dev.p1.out files
+                                 2) Place evalResult.py script in the same directory as your EN and FR dev.out and dev.prediction files.
+                                 3) In the terminal or command prompt, navigate to the directory where the files are located.
+                                 4) Run the following command: 'python evalResult.py dev.out dev.prediction'
+                                 5) It wil calculate precision, recall, and F-score. So it will test both the Viterbi algorithm and the Python function
+                                    that estimates the transition parameters.
+    """
+    # Initializing the trellis
+    
+    
+
+
+    trellis = [{0:{"prob":0, "prev":None},
+    1: {"prob":0, "prev":None}, 
+    2:{"prob":0, "prev":None},
+    3:{"prob":0, "prev":None},
+    4:{"prob":0, "prev":None},
+    5:{"prob":0, "prev":None},
+    6:{"prob":0, "prev":None},
+    7:{"prob":0, "prev":None},
+    8:{"prob":0, "prev":None},
+    9:{"prob":0, "prev":None},
+    10:{"prob":0, "prev":None},
+    11:{"prob":0, "prev":None},
+    12:{"prob":0, "prev":None},
+    13:{"prob":0, "prev":None},
+    14:{"prob":0, "prev":None},
+    15:{"prob":0, "prev":None},
+    16:{"prob":0, "prev":None},
+    17:{"prob":0, "prev":None},
+    18:{"prob":0, "prev":None},
+    19:{"prob":0, "prev":None}} 
+    for i in range(len(sentence)+2)]
+   
+    count =0
+    tags = ["O", "B-ADJP", "I-ADJP","B-ADVP","I-ADVP","B-CONJP","I-CONJP","B-INTJ","I-INTJ","B-NP","I-NP", "B-PP","I-PP","B-PRT", "B-SBAR","I-SBAR","B-VP","I-VP"]
+    emission_label= {
+          "O": 0,
+          "B-ADJP":1,
+          "I-ADJP":2,
+          "B-ADVP":3,
+          "I-ADVP":4,
+          "B-CONJP":5,
+          "I-CONJP":6,
+          "B-INTJ": 7,
+          "I-INTJ": 8,
+          "B-NP": 9,
+          "I-NP": 10,
+          "B-PP": 11,
+          "I-PP": 12,
+          "B-PRT":13,
+          "B-SBAR":14,
+          "I-SBAR":15,
+          "B-VP": 16,
+          "I-VP":17,
+    }
+    count=0
+
+   
+    n_tags = len(tags)
+    for i in range(n_tags):
+        token = sentence[0]
+        if token in all_tokens:
+            token_idx = all_tokens.index(token)
+            trellis[0][i]["prob"] = np.log(emission_prob[emission_label[tags[i]], token_idx]) + np.log(trans_prob[labels_EN["START"], labels_EN[tags[i]]])
+
+        else:
+            trellis[0][i]["prob"] = np.log(emission_prob[emission_label[tags[i]], -1]) + np.log(trans_prob[labels_EN["START"], labels_EN[tags[i]]])
+            
+
+    # Filling in the rest of the trellis
+    for i in range(1, len(sentence)):
+        
+        for tag in tags:
+            max_prob = 0
+            max_prev = None
+            u = labels_EN[tag]
+          
+            for prev_tag in tags:
+
+                v = labels_EN[prev_tag]
+                trans_p = trans_prob[v][u]
+                prev_prob = trellis[i-1][v]["prob"]
+                if (prev_prob== 0 or trans_p == 0):
+                   continue
+                #print(prev_prob)
+                if sentence[i] in all_tokens:
+                    emission_p = emission_prob[emission_label[tag]][all_tokens.index(sentence[i])]
+                else:
+                    emission_p = emission_prob[emission_label[tag]][-1] #UNK token
+
+                prob = prev_prob + np.log(trans_p) + np.log(emission_p)
+                #print("Probability:", prob)
+                if prob > max_prob:
+                    max_prob = prob
+                    max_prev = prev_tag
+
+
+               
+            if max_prob != 0:
+                trellis[i][u] = {"prob": max_prob, "prev": max_prev}
+
+    #print("reached n+1")
+    n= len(sentence)
+
+
+    #Final Step (n+1)
+    max_prob = 0
+    max_prev = None
+    for tag in tags:
+        prev_prob = trellis[n][labels_EN[tag]]["prob"]
+        transmission_prob = trans_prob[labels_EN[tag]][labels_EN['STOP']]
+        
+        if (prev_prob == 0 or transmission_prob == 0):
+            continue
+        prob = prev_prob + math.log(transmission_prob)
+        if prob > max_prob:
+            max_prob = prob
+            max_prev = tag
+
+    if max_prob != 0:
+        trellis[n+1][labels_EN['STOP']] = {"prob": max_prob, "prev": max_prev}
+
+
+
+
+    # Finding the most likely tag sequence by backtracking through the trellis
+    max_tag_seq = ['' for i in range(n)]
+
+    if max_prev is None:
+        max_prev = "O"
+
+    for i in range(n+1, -1, -1):
+        max_prev = trellis[i][labels_EN[max_prev]]["prev"]
+        if max_prev== None:
+            max_prev = "O"
+
+        max_tag_seq[i-2] = max_prev
+        
+   # print("Max seq",max_tag_seq)
+    return max_tag_seq
+
+
+
+
+
+
+
+#reading and preprocessing of training data 
+def read_train_data(path, labels):
+    results = []
+    results.append(('', labels["START"])) #append "START" tag to starting of file.
+
+    with open(path, "r", encoding="utf-8") as file:
+        for line in file:
+            line = line.strip()
+            if not line:             #get rid of empty lines and whitespaces
+                continue
+            token, label = line.rsplit(" ", 1)
+            if label in labels_EN:
+                results.append((token, labels[label]))
+
+    results.append(('', labels["STOP"]))  #append STOP tag to ending of file. 
+
+    return results
+
+
+def read_test_data(path):
+    sentence_list = [[]]
+    with open(path, "r", encoding="utf-8") as file:
+        
+        for line in file:
+            if line == "\n":
+                sentence_list.append([])
+            else:
+                sentence_list[-1].append(line.rstrip())
+
+    return sentence_list[:-1] #list where every element is itself a list of words of a sentence. Format : [[w1,w2,...end of sentence1], [w1,w2,...end of sentence2]...[last sentence]]
+
+
+
+
+def viterbi_loop(test_data, transition_parameters, emission_parameters,labels, all_tokens):
+    final = []
+    for sentence in test_data:
+        #print("Sentence", sentence)
+    
+        final.append(viterbi(sentence, labels, transition_parameters, emission_parameters, all_tokens))
+    return final
+
+
+def write_viterbi_output_to_file(language):
+    if language == "EN":
+        
+        #Emission parameters
+        train_data_emission = read_training_data(en_train_path, labels_EN)
+        all_tokens = get_tokens(train_data_emission)
+        emission_parameters = estimate_emission_parameters(train_data_emission, all_tokens, N_EN)
+
+        #transition parameters
+        train_data_transition= read_train_data(en_train_path, labels_EN)
+        #print("First 10 token-label pairs:",train_data[:10])
+        transition_parameters = estimate_transition_parameters(train_data_transition, N_EN)
+
+        #Viterbi call
+        test_data = read_test_data(en_dev_in_path)
+        tags = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+        prediction = viterbi_loop(test_data, transition_parameters, emission_parameters, tags, all_tokens )
+
+       # print(prediction)
+        with open(en_dev_p2_out_path, "w+", encoding="utf-8") as file:
+            for i in range(len(test_data)):
+                if test_data[i] and prediction[i]:
+                    file.write("{} {}\n".format(test_data[i], prediction[i]))
+                else:
+                    file.write("\n")
+
+
+write_viterbi_output_to_file("EN")
