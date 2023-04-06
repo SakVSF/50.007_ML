@@ -26,7 +26,7 @@ def estimate_emission_parameters(data, all_tokens, N, k=1.0):
     for index in range(len(emission_counts)):
         emission_parameters[index, :] = emission_counts[index, :] / (label_counts[index] + k)
 
-    print("Emission table:", emission_parameters[:2][:2])
+    print("Emission table:", emission_parameters[:][:2])
 
 
     return emission_parameters  #each value in this 2d array gives the probability e(x|y) with corresponding row as the label/tag and column as the token/word

@@ -1,5 +1,5 @@
 NO B-INTJ
-Saints B-CONJP
+Saints I-CONJP
 R I-CONJP
 . O
 Buch I-CONJP
@@ -9,7 +9,7 @@ back B-ADVP
 n I-ADJP
 play I-VP
 vs I-NP
-Seahawks I-CONJP
+Seahawks B-CONJP
 on B-PP
 Sunday B-NP
 ?? O
@@ -35,11 +35,11 @@ day I-NP
 __AND__ O
 it B-NP
 just B-ADVP
-keeps I-CONJP
+keeps B-CONJP
 getting I-VP
 better I-ADVP
 !!! O
-Thank I-CONJP
+Thank B-CONJP
 You B-NP
 Lord I-CONJP
 ! O
@@ -54,18 +54,18 @@ today B-NP
 but O
 its B-NP
 okay I-INTJ
-bcuz B-CONJP
+bcuz I-CONJP
 i B-NP
 still B-ADVP
 love B-VP
 you B-NP
 
 @iians B-CONJP
-Id B-CONJP
+Id I-CONJP
 love B-VP
 to B-PP
 see I-VP
-IDWT B-CONJP
+IDWT I-CONJP
 live B-ADJP
 from B-PP
 CES I-CONJP
@@ -83,7 +83,7 @@ myself B-NP
 . O
 
 @Team_Panic B-CONJP
-omg I-CONJP
+omg B-CONJP
 , O
 i B-NP
 wish B-VP
@@ -91,7 +91,7 @@ i B-NP
 got B-VP
 paid I-CONJP
 to B-PP
-freak B-CONJP
+freak I-CONJP
 people B-NP
 out B-PRT
 . O
@@ -102,13 +102,13 @@ funny I-ADJP
 when B-ADVP
 they B-NP
 think I-VP
-you'r B-CONJP
+you'r I-CONJP
 serious I-NP
 . O
-noobs B-CONJP
+noobs I-CONJP
 . O
 
-fckn B-CONJP
+fckn I-CONJP
 emily B-CONJP
 rodriguez B-CONJP
 did B-VP
@@ -119,15 +119,15 @@ cookies B-CONJP
 today B-NP
 !! O
 lil I-NP
-brat I-CONJP
+brat B-CONJP
 . O
 
 Amazon I-CONJP
 U.K. B-CONJP
-Offering I-CONJP
+Offering B-CONJP
 HTC B-CONJP
-Desire B-CONJP
-Z B-CONJP
+Desire I-CONJP
+Z I-CONJP
 Unlocked B-CONJP
 October I-NP
 11 I-NP
@@ -139,19 +139,19 @@ official I-NP
 word B-INTJ
 of I-CONJP
 the B-NP
-HTC B-CONJP
-Desire I-CONJP
-Z B-CONJP
+HTC I-CONJP
+Desire B-CONJP
+Z I-CONJP
 earlier I-ADVP
 in I-PP
 Lo B-CONJP
 ... O
-http://bit.ly/bsyz9H B-CONJP
+http://bit.ly/bsyz9H I-CONJP
 
 Lmao I-CONJP
 .. O
 They B-NP
-#Hurrt I-CONJP
+#Hurrt B-CONJP
 ! O
 RT O
 @_sofucKENNrude I-CONJP
@@ -174,7 +174,7 @@ time I-NP
 ago I-ADVP
 . O
 -_- I-INTJ
-skimp I-CONJP
+skimp B-CONJP
 ass I-NP
 braids B-CONJP
 . O
@@ -199,29 +199,29 @@ I B-NP
 'm B-VP
 ready B-ADJP
 for B-PP
-dis I-CONJP
+dis B-CONJP
 weekend I-NP
 
 On B-PP
-Thanksgiving B-CONJP
+Thanksgiving I-CONJP
 after B-PP
 you B-NP
 done B-VP
 eating I-CONJP
 its B-NP
-#TimeToGetOut B-CONJP
-unless B-CONJP
+#TimeToGetOut I-CONJP
+unless I-CONJP
 you B-NP
 wanna B-VP
 help I-VP
 with B-PP
 the B-NP
-dishes I-CONJP
+dishes B-CONJP
 
 Got B-VP
 another B-NP
 two I-NP
-box B-CONJP
+box I-CONJP
 of I-CONJP
 chocolate I-NP
 from B-PP
@@ -243,7 +243,7 @@ chocolate I-NP
 . O
 Everything B-NP
 pratically B-CONJP
-remind I-CONJP
+remind B-CONJP
 me B-NP
 of I-CONJP
 you B-NP
@@ -259,7 +259,7 @@ I B-NP
 'm B-VP
 so B-ADJP
 anxious I-CONJP
-beacuse I-CONJP
+beacuse B-CONJP
 of I-CONJP
 tomorrow B-NP
 omg B-CONJP
@@ -285,10 +285,10 @@ in I-PP
 da I-CONJP
 mood I-NP
 to B-PP
-deal I-CONJP
+deal B-CONJP
 wit B-PP
 their B-NP
-bullshit I-CONJP
+bullshit B-CONJP
 !! O
 Fukk I-CONJP
 outta B-PP
@@ -301,8 +301,8 @@ are B-VP
 cooking I-NP
 about I-PP
 a B-NP
-dozen I-CONJP
-pizzas B-CONJP
+dozen B-CONJP
+pizzas I-CONJP
 at B-PP
 our B-NP
 house I-NP
@@ -313,15 +313,15 @@ tonight B-NP
 . O
 Nonetheless B-CONJP
 it B-NP
-smells I-CONJP
-fresh I-CONJP
+smells B-CONJP
+fresh B-CONJP
 in I-PP
 this B-NP
 place I-NP
 . O
 
 Think B-VP
-I'ma I-CONJP
+I'ma B-CONJP
 make I-VP
 @GrownWomanStuff B-CONJP
 have B-VP
@@ -339,21 +339,21 @@ friday I-NP
 http://is.gd/ffDb9 I-CONJP
 
 I B-NP
-kept I-CONJP
+kept B-CONJP
 telling B-CONJP
-niggers B-CONJP
-it'd B-CONJP
-happen I-CONJP
+niggers I-CONJP
+it'd I-CONJP
+happen B-CONJP
 . O
 Come B-VP
 Thursday B-NP
 im B-NP
-inna I-CONJP
+inna B-CONJP
 boardroom I-CONJP
 full B-ADJP
 of I-CONJP
-niggers I-CONJP
-3times I-CONJP
+niggers B-CONJP
+3times B-CONJP
 my B-NP
 age B-NP
 . O
@@ -361,20 +361,20 @@ age B-NP
 . O
 at B-PP
 the B-NP
-tender B-CONJP
+tender I-CONJP
 age B-NP
 of I-CONJP
 17 I-NP
 !! O
 Im B-NP
-pleased B-CONJP
+pleased I-CONJP
 . O
 
-Shower I-CONJP
+Shower B-CONJP
 time I-NP
 the B-NP
-flyin I-CONJP
-pilot I-CONJP
+flyin B-CONJP
+pilot B-CONJP
 I B-NP
 was B-VP
 at B-PP
@@ -388,13 +388,13 @@ hot B-ADJP
 water B-NP
 uggghh I-CONJP
 
-@hime8644 I-CONJP
+@hime8644 B-CONJP
 LOL B-INTJ
-theres B-CONJP
+theres I-CONJP
 always B-ADVP
 some B-NP
 good I-ADJP
-vids B-CONJP
+vids I-CONJP
 I B-NP
 didnt B-VP
 see I-VP
@@ -418,7 +418,7 @@ I B-NP
 could B-VP
 n't I-VP
 be I-VP
-happier B-CONJP
+happier I-CONJP
 . O
 Ending B-CONJP
 a B-NP
@@ -427,7 +427,7 @@ week I-NP
 on B-PP
 a B-NP
 good I-ADJP
-note B-CONJP
+note I-CONJP
 is B-VP
 always B-ADVP
 nice I-ADJP
@@ -438,17 +438,17 @@ GAGA B-CONJP
 IS B-VP
 BETTER I-CONJP
 THE B-NP
-5th B-CONJP
+5th I-CONJP
 TIME I-NP
-OH B-CONJP
-BABY( I-CONJP
+OH I-CONJP
+BABY( B-CONJP
 : O
 
 Pope B-NP
 says B-CONJP
-religion B-CONJP
+religion I-CONJP
 ' O
-marginalized': I-CONJP
+marginalized': B-CONJP
 That B-NP
 's B-VP
 why B-ADVP
@@ -457,9 +457,9 @@ ca B-VP
 n't I-VP
 get I-VP
 a B-NP
-headline I-CONJP
+headline B-CONJP
 printed B-CONJP
-anywhere I-CONJP
+anywhere B-CONJP
 , O
 because B-SBAR
 religion I-CONJP
@@ -469,7 +469,7 @@ mar B-CONJP
 ... O
 http://bit.ly/cBvt1u B-CONJP
 
-@ashhleybrookee B-CONJP
+@ashhleybrookee I-CONJP
 it B-NP
 may B-VP
 be I-VP
@@ -485,8 +485,8 @@ this B-NP
 will B-VP
 be I-VP
 more I-ADVP
-lhs I-CONJP
-games I-CONJP
+lhs B-CONJP
+games B-CONJP
 then B-ADVP
 i B-NP
 went B-VP
@@ -513,7 +513,7 @@ spencer I-CONJP
 from B-PP
 iCarly I-CONJP
 was B-VP
-Crazy B-CONJP
+Crazy I-CONJP
 Steve I-NP
 , O
 Carly B-CONJP
@@ -529,20 +529,20 @@ fat I-NP
 [ O
 GigaOM B-CONJP
 ] O
-DRM B-CONJP
-FAIL I-CONJP
+DRM I-CONJP
+FAIL B-CONJP
 : O
 Five B-NP
-Broken I-CONJP
-Copy B-CONJP
-Protection I-CONJP
-Schemes I-CONJP
+Broken B-CONJP
+Copy I-CONJP
+Protection B-CONJP
+Schemes B-CONJP
 : O
 This B-NP
 week I-NP
 , O
 we B-NP
-learned I-CONJP
+learned B-CONJP
 that B-SBAR
 the B-NP
 HDCP B-CONJP
@@ -554,7 +554,7 @@ http://bit.ly/blWf0e B-CONJP
 
 Friday I-NP
 Night B-INTJ
-Eats B-CONJP
+Eats I-CONJP
 http://twitpic.com/2pdvtr B-CONJP
 
 I B-NP
@@ -571,7 +571,7 @@ know I-VP
 ? O
 
 RT O
-@PeepsMagoo B-CONJP
+@PeepsMagoo I-CONJP
 : O
 Please B-VP
 help I-VP
@@ -588,25 +588,25 @@ put B-VP
 down B-PRT
 at B-PP
 a B-NP
-Camarillo I-CONJP
+Camarillo B-CONJP
 shelter I-CONJP
 on B-PP
 Jan B-NP
 6 B-NP
-http://fragurl.com/5P B-CONJP
+http://fragurl.com/5P I-CONJP
 
 I B-NP
 have B-VP
 a B-NP
 strong I-ADJP
-hunch B-CONJP
-Adam I-CONJP
+hunch I-CONJP
+Adam B-CONJP
 will B-VP
 be I-VP
 a B-NP
 story I-NP
 on B-PP
-TMZ I-CONJP
+TMZ B-CONJP
 tonight B-NP
 . O
 Gulp I-CONJP
@@ -629,42 +629,42 @@ FUCK I-CONJP
 THIS B-NP
 IS B-VP
 THE B-NP
-MOST B-CONJP
+MOST I-CONJP
 BORING I-CONJP
 DAY I-NP
 EVER I-VP
 . O
 
 A B-NP
-TRUE B-CONJP
+TRUE I-CONJP
 friend I-NP
 walks B-CONJP
 in I-PP
 when B-ADVP
 everybody B-CONJP
 else B-CONJP
-walks B-CONJP
+walks I-CONJP
 out B-PRT
 ! O
 
 #Astros B-CONJP
-lineup I-CONJP
+lineup B-CONJP
 for B-PP
 tonight B-NP
 . O
-Keppinger B-CONJP
-sits I-CONJP
+Keppinger I-CONJP
+sits B-CONJP
 , O
-Downs B-CONJP
-plays B-CONJP
-2B I-CONJP
+Downs I-CONJP
+plays I-CONJP
+2B B-CONJP
 , O
-CJ I-CONJP
-bats I-CONJP
-5th B-CONJP
+CJ B-CONJP
+bats B-CONJP
+5th I-CONJP
 . O
-@alysonfooter I-CONJP
-http://bit.ly/bHvgCS I-CONJP
+@alysonfooter B-CONJP
+http://bit.ly/bHvgCS B-CONJP
 
 RT O
 @rockerfuckerak B-CONJP
@@ -678,14 +678,14 @@ done B-VP
 Just B-ADVP
 leave I-VP
 it B-NP
-alone I-CONJP
+alone B-CONJP
 , O
 and I-PP
 do B-VP
 n't I-VP
 regret B-CONJP
 . O
-Sometimes I-CONJP
+Sometimes B-CONJP
 somethings I-CONJP
 turn I-VP
 in-to I-CONJP
@@ -699,43 +699,43 @@ when B-ADVP
 ... O
 
 Long B-NP
-18k B-CONJP
+18k I-CONJP
 run I-VP
 done B-VP
 and I-PP
 in I-PP
 the B-NP
-books I-CONJP
+books B-CONJP
 ! O
-Beauty I-CONJP
+Beauty B-CONJP
 day I-NP
 . O
 Til B-PP
 now I-ADVP
 , O
 at B-PP
-dentist I-CONJP
+dentist B-CONJP
 , O
 and I-PP
 lady I-NP
 next I-ADVP
 to B-PP
 me B-NP
-spilling I-CONJP
+spilling B-CONJP
 over B-PRT
 to B-PP
 my B-NP
-chair B-CONJP
+chair I-CONJP
 .. O
 Just B-ADVP
 belched B-CONJP
 . O
 Loudly I-CONJP
 . O
-+1 I-CONJP
++1 B-CONJP
 
 RT O
-@JupiterStorm I-CONJP
+@JupiterStorm B-CONJP
 : O
 1 I-NP
 . O
@@ -749,11 +749,11 @@ day I-NP
 went B-VP
 on B-PP
 an B-NP
-Emporer B-CONJP
+Emporer I-CONJP
 's B-VP
 New I-NP
 Groove B-CONJP
-rampage B-CONJP
+rampage I-CONJP
 through B-PP
 twitter B-NP
 . O
@@ -765,11 +765,11 @@ day I-NP
 goin I-VP
 ? O
 
-@PERSONGUY6661 B-CONJP
+@PERSONGUY6661 I-CONJP
 I B-NP
 have B-VP
 n't I-VP
-unfortunately B-CONJP
+unfortunately I-CONJP
 :( B-INTJ
 I B-NP
 missed B-VP
@@ -779,7 +779,7 @@ when B-ADVP
 theycame B-CONJP
 to B-PP
 the B-NP
-uk I-CONJP
+uk B-CONJP
 this B-NP
 year I-NP
 , O
@@ -788,7 +788,7 @@ seen I-VP
 them B-NP
 ? O
 
-@Yeweezii B-CONJP
+@Yeweezii I-CONJP
 Jst B-CONJP
 lock B-CONJP
 her B-NP
@@ -800,7 +800,7 @@ nite B-INTJ
 It B-NP
 workz I-CONJP
 al I-NP
-d I-CONJP
+d B-CONJP
 time I-NP
 :-D I-CONJP
 
@@ -819,17 +819,17 @@ tonight B-NP
 @YoDayDay B-CONJP
 Nope B-INTJ
 ! O
-*lil B-CONJP
-kid I-CONJP
+*lil I-CONJP
+kid B-CONJP
 voice* B-CONJP
 im B-NP
 being I-VP
 stingy I-CONJP
 tonight B-NP
 !! O
-*hmph* B-CONJP
+*hmph* I-CONJP
 
-@Phoebe1_ I-CONJP
+@Phoebe1_ B-CONJP
 and I-PP
 i B-NP
 also B-ADVP
@@ -838,7 +838,7 @@ the B-NP
 last B-NP
 years I-NP
 eurovision B-CONJP
-entry B-CONJP
+entry I-CONJP
 !! O
 hoppaa I-CONJP
 ! O
@@ -849,21 +849,21 @@ too B-ADJP
 !! O
 
 " O
-@DJDROC B-CONJP
+@DJDROC I-CONJP
 : O
 #beforeserato B-CONJP
 djs B-CONJP
 actually B-ADJP
 used B-VP
-headphones I-CONJP
+headphones B-CONJP
 believe I-VP
 it B-NP
 or O
 not I-VP
 " O
---- I-CONJP
-except B-CONJP
-majestic B-CONJP
+--- B-CONJP
+except I-CONJP
+majestic I-CONJP
 and I-PP
 me B-NP
 when B-ADVP
@@ -879,7 +879,7 @@ Eyeopener I-CONJP
 vs I-NP
 . O
 Ryerson I-CONJP
-Quidditch I-CONJP
+Quidditch B-CONJP
 team I-NP
 this B-NP
 Sunday B-NP
@@ -894,7 +894,7 @@ get I-VP
 cheap B-CONJP
 brooms B-CONJP
 ? O
-#Ryerson B-CONJP
+#Ryerson I-CONJP
 @RUQuidditch I-CONJP
 #Rams B-CONJP
 
@@ -930,7 +930,7 @@ want B-VP
 to B-PP
 say I-VP
 to B-PP
-ten I-CONJP
+ten B-CONJP
 different B-NP
 people B-NP
 right B-ADVP
@@ -939,25 +939,25 @@ now I-ADVP
 1 I-NP
 ) I-INTJ
 Eduardo B-CONJP
-Surita I-CONJP
+Surita B-CONJP
 : O
 your B-NP
 a B-NP
-freaking B-CONJP
+freaking I-CONJP
 ... O
-http://tumblr.com/xmciuda0t I-CONJP
+http://tumblr.com/xmciuda0t B-CONJP
 
 Our B-NP
 Favorite I-NP
-YouTube I-CONJP
+YouTube B-CONJP
 Videos I-CONJP
 This B-NP
 Week I-NP
 : O
 The B-NP
 Drama I-CONJP
-Edition I-CONJP
-http://dlvr.it/5RfHy I-CONJP
+Edition B-CONJP
+http://dlvr.it/5RfHy B-CONJP
 
 I B-NP
 just B-ADVP
@@ -994,15 +994,15 @@ first I-NP
 assignment I-CONJP
 was B-VP
 a B-NP
-medical B-CONJP
-illustration I-CONJP
+medical I-CONJP
+illustration B-CONJP
 job I-NP
 through B-PP
 a B-NP
 friend I-NP
 . O
 After I-PP
-meeting I-CONJP
+meeting B-CONJP
 with B-PP
 the B-NP
 surgeon B-CONJP
@@ -1040,21 +1040,21 @@ have B-VP
 this B-NP
 on B-PP
 my B-NP
-computer I-CONJP
+computer B-CONJP
 , O
 it B-NP
-gives I-CONJP
+gives B-CONJP
 me B-NP
 days I-NP
 , O
 hours I-NP
 , O
-mintues B-CONJP
+mintues I-CONJP
 __AND__ O
 seconds B-CONJP
 till B-SBAR
 Feb I-NP
-9th I-CONJP
+9th B-CONJP
 ! O
 #purpleglasses B-CONJP
 http://twitpic.com/3nouem I-CONJP
@@ -1113,7 +1113,7 @@ this B-NP
 week I-NP
 . O
 Wingo I-CONJP
-tellin I-CONJP
+tellin B-CONJP
 me B-NP
 and I-PP
 wood I-CONJP
@@ -1123,16 +1123,16 @@ I B-NP
 'm B-VP
 scared B-VP
 " O
-#pow#pow#pow@Cowboy_Wingo I-CONJP
+#pow#pow#pow@Cowboy_Wingo B-CONJP
 
 Gotta B-VP
 love B-VP
 the B-NP
-bumper I-CONJP
+bumper B-CONJP
 stickers I-CONJP
 of I-CONJP
 Fayette B-CONJP
-County B-CONJP
+County I-CONJP
 : O
 " O
 Ever B-CONJP
@@ -1142,7 +1142,7 @@ there I-ADVP
 is B-VP
 life I-NP
 after B-PP
-death B-CONJP
+death I-CONJP
 ? O
 Touch B-CONJP
 my B-NP
@@ -1172,19 +1172,19 @@ see I-VP
 @pink B-CONJP
 : O
 My B-NP
-Story I-CONJP
+Story B-CONJP
 at B-PP
 7pm B-NP
 tonight B-NP
-http://bit.ly/hLAnXp I-CONJP
+http://bit.ly/hLAnXp B-CONJP
 
 @joejonas I-CONJP
 @nickjonas I-CONJP
 @kevinjonas I-CONJP
 @papajonas B-CONJP
 @greggarbo B-CONJP
-@johnlloydtaylor B-CONJP
-Rock I-CONJP
+@johnlloydtaylor I-CONJP
+Rock B-CONJP
 to B-PP
 SECTION I-CONJP
 204 I-CONJP
@@ -1199,7 +1199,7 @@ be I-VP
 like B-PP
 April B-NP
 on B-PP
-youtube B-CONJP
+youtube I-CONJP
 
 @MeredithLim B-CONJP
 No I-INTJ
@@ -1275,7 +1275,7 @@ offensive B-NP
 and I-PP
 would B-VP
 be I-VP
-difficult I-CONJP
+difficult B-CONJP
 to B-PP
 explain I-CONJP
 . O
@@ -1288,10 +1288,10 @@ me B-NP
 I B-NP
 want B-VP
 to B-PP
-yell I-CONJP
+yell B-CONJP
 , O
 " O
-URDUMB B-CONJP
+URDUMB I-CONJP
 !" O
 
 RT O
@@ -1309,7 +1309,7 @@ FRIDAY B-NP
 ! O
 :) B-INTJ
 
-People B-CONJP
+People I-CONJP
 who B-NP
 tweet B-VP
 to B-PP
@@ -1318,8 +1318,8 @@ follow I-VP
 will B-VP
 get I-VP
 huge I-NP
-shout I-CONJP
-outs B-CONJP
+shout B-CONJP
+outs I-CONJP
 from B-PP
 me B-NP
 :) B-INTJ
@@ -1331,7 +1331,7 @@ you B-NP
 do B-VP
 ! O
 
-Was I-CONJP
+Was B-CONJP
 hard I-ADJP
 work I-VP
 going I-VP
@@ -1351,12 +1351,12 @@ run I-VP
 and I-PP
 plenty B-CONJP
 of I-CONJP
-weights B-CONJP
+weights I-CONJP
 . O
-Catching B-CONJP
+Catching I-CONJP
 up B-PRT
 on B-PP
-ufc B-CONJP
+ufc I-CONJP
 now I-ADVP
 
 @paulwalk I-CONJP
@@ -1376,22 +1376,22 @@ weeks I-NP
 Empire I-CONJP
 State I-NP
 Building B-CONJP
-= I-CONJP
-ESB B-CONJP
+= B-CONJP
+ESB I-CONJP
 . O
-Pretty B-CONJP
+Pretty I-CONJP
 bad I-ADJP
-storm I-CONJP
+storm B-CONJP
 here B-ADVP
 last B-NP
 evening I-INTJ
 . O
 
 RT O
-@DesignerDepot I-CONJP
+@DesignerDepot B-CONJP
 : O
 Minimalist I-CONJP
-Web B-CONJP
+Web I-CONJP
 Design I-CONJP
 : O
 When B-ADVP
@@ -1399,7 +1399,7 @@ Less I-CONJP
 is B-VP
 More B-NP
 - I-INTJ
-http://ow.ly/2FwyX I-CONJP
+http://ow.ly/2FwyX B-CONJP
 
 No I-INTJ
 bike I-NP
@@ -1415,7 +1415,7 @@ wild I-CONJP
 night I-NP
 ! O
 
-plez B-CONJP
+plez I-CONJP
 check I-VP
 https://owensoto.wordpress.com/ I-CONJP
 ( I-INTJ
@@ -1423,11 +1423,11 @@ my B-NP
 blog I-NP
 ) I-INTJ
 __AND__ O
-http://www.youtube.com/user/22Soto22?feature=mhum B-CONJP
+http://www.youtube.com/user/22Soto22?feature=mhum I-CONJP
 ( I-INTJ
 my B-NP
-youtube B-CONJP
-channel I-CONJP
+youtube I-CONJP
+channel B-CONJP
 ) I-INTJ
 if I-SBAR
 u B-NP
@@ -1439,7 +1439,7 @@ time I-NP
 ive B-NP
 been I-VP
 to B-PP
-13 B-CONJP
+13 I-CONJP
 30stm I-CONJP
 concerts I-CONJP
 now I-ADVP
@@ -1450,14 +1450,14 @@ got B-VP
 me B-NP
 on B-PP
 stage B-NP
-during/before B-CONJP
+during/before I-CONJP
 kings I-CONJP
 and I-PP
-queens B-CONJP
+queens I-CONJP
 :( B-INTJ
-(( I-CONJP
+(( B-CONJP
 
-http://bit.ly/aTTQYq B-CONJP
+http://bit.ly/aTTQYq I-CONJP
 When B-ADVP
 Pepsi I-NP
 to B-PP
@@ -1468,20 +1468,20 @@ to B-PP
 , O
 winning B-VP
 a B-NP
-Nokia I-CONJP
+Nokia B-CONJP
 5800 B-CONJP
 ? O
 
 @Jezkwon I-CONJP
-@kpop_stuff B-CONJP
-Tweet I-CONJP
+@kpop_stuff I-CONJP
+Tweet B-CONJP
 me B-NP
 a B-NP
 member B-CONJP
 for B-PP
 picspam I-CONJP
 . O
-Will B-CONJP
+Will I-CONJP
 do B-VP
 them B-NP
 tomorrow B-NP
@@ -1490,13 +1490,13 @@ morning I-INTJ
 ( I-INTJ
 : O
 
-@BexsterBexster I-CONJP
-@shinobi32768 B-CONJP
+@BexsterBexster B-CONJP
+@shinobi32768 I-CONJP
 I B-NP
 've B-VP
 been I-VP
 having I-VP
-soup I-CONJP
+soup B-CONJP
 all B-NP
 week I-NP
 , O
@@ -1505,14 +1505,14 @@ n't I-VP
 really B-ADJP
 have B-VP
 a B-NP
-favourite I-CONJP
+favourite B-CONJP
 . O
 It B-NP
 's B-VP
 starting I-VP
 to B-PP
 taste I-CONJP
-pretty B-CONJP
+pretty I-CONJP
 much I-ADVP
 the B-NP
 same B-NP
