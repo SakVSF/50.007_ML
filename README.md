@@ -17,6 +17,7 @@ __For FR dataset__ :
 python part1.py FR
 python evalResult.py FR/dev.out FR/dev.p1.out
 ```
+-------------------------------------------------------------------------
 ### Part 2 : 
 
  __For EN dataset__ : 
@@ -30,7 +31,7 @@ __For FR dataset__ :
 python part2.py FR
 python evalResult.py FR/dev.out FR/dev.p2.out
 ```
-
+------------------------------------------------------------------------
 ### Part 3 : 
 
  __For EN dataset__ : 
@@ -44,7 +45,7 @@ __For FR dataset__ :
 python part3.py FR
 python evalResult.py FR/dev.out FR/dev.p3.out
 ```
-
+-----------------------------------------------------------------------
 
 ### Part 4 : 
 
@@ -60,3 +61,4 @@ python part4.py FR
 python evalResult.py FR/dev.out FR/dev.p4.out
 ```
 
+-----------------------------------------------------------------------
