@@ -1,4 +1,4 @@
-# 50.007_ML
+# Sentiment Analysis System
 50.007 Machine Learning Project Spring 2023 
 
 ## Instructions to run the code 
