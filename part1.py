@@ -1,82 +1,112 @@
-#part1
-from utilities import *
-import numpy as np
-import random
-from collections import Counter
-
-def estimate_emission_parameters(data, all_tokens, N, k=1.0):
-
-    print("number of unique tokens", len(all_tokens), "N", N)
-
-    # the extra +1 column is for #UNK# tokens
-    emission_counts = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)   #creates an NP array where rows - labels, columns - unique tokens
-    emission_parameters = np.zeros((N, len(all_tokens) + 1), dtype=np.longdouble)
-
-    # calculate count(label -> token) 
-    for token, label in data:
-        emission_counts[label-1][all_tokens.index(token)] += 1    #keep a count of how many times each token appears for each label in the data list
-    
-    #last column filled with k value for UNK token
-    emission_counts[:, -1] = [k] *(N)
-   
-    # calculate count(label)
-    label_counts = get_label_counts(data)    # a list where label_counts[0] gives the count of label 0 which is START
-   
-    # calculate count(label->token)/count(label) for each label 
-    for index in range(len(emission_counts)):
-        emission_parameters[index, :] = emission_counts[index, :] / (label_counts[index] + k)
-
-    print("Emission table:", emission_parameters[:][:2])
+import sys
+import time
+from pathlib import Path
 
 
-    return emission_parameters  #each value in this 2d array gives the probability e(x|y) with corresponding row as the label/tag and column as the token/word
-
-
-
-
-
-   
-        
-
-
-
-def predict_FR_output():
-    train_data = read_training_data(fr_train_path, labels_FR)
-    all_tokens = get_tokens(train_data)
-    emission_parameters = estimate_emission_parameters(train_data, all_tokens, N_FR)
-
-    predictions = []
-    test_data = read_dev_in_data(fr_dev_in_path)
-    for token in test_data:
-        if token:
-            label = label_from_token(token, emission_parameters, all_tokens, labels_list_FR)
-            predictions.append(token + " " + label )
+def addCount(parent, child, d):
+    # Increment the count of [parent][child] in dictionary d
+    if parent in d:
+        if child in d[parent]:
+            d[parent][child] += 1
         else:
-            predictions.append("")
-
-    with open(fr_dev_p1_out_path, "w+", encoding="utf-8") as file:
-        for line in predictions:
-            file.write(line + "\n")
-
-def predict_EN_output():
-    train_data = read_training_data(en_train_path, labels_EN)
-    all_tokens = get_tokens(train_data)
-    emission_parameters = estimate_emission_parameters(train_data, all_tokens, N_EN)
-
-    predictions = []
-    test_data = read_dev_in_data(en_dev_in_path)
-    for token in test_data:
-        if token:
-            label = label_from_token(token, emission_parameters, all_tokens, labels_list_EN)
-            predictions.append(token + " " +  label )
-        else:
-            predictions.append("")
-
-    with open(en_dev_p1_out_path, "w+", encoding="utf-8") as file:
-        for line in predictions:
-            file.write(line + "\n")
+            d[parent][child] = 1
+    else:
+        d[parent] = {child: 1}
 
 
+def getEmissions(file, k=1):
+    """
+    input = training file
+    output = emission parameters (dict)
+    @param k: Words appearing less than k times will be
+    replaced with #UNK#
+  
+    """
+    emissions = {}
+    count = {}
 
-predict_EN_output()
-predict_FR_output()
+    with open(file, encoding="utf-8") as f:
+        for line in f:
+            temp = line.strip()
+
+            # ignore empty lines
+            if len(temp) == 0:
+                continue
+            else:
+                last_space_index = temp.rfind(" ")
+                x = temp[:last_space_index].lower()
+                y = temp[last_space_index + 1:]
+
+                # update count(y)
+                if y in count:
+                    count[y] += 1
+                else:
+                    count[y] = 1
+
+                # update count(y->x)
+                addCount(y, x, emissions)
+
+    #count = {tag1: count1, tag2: count2, etc}
+
+    #emission = {tag: {word1:count1, word2:count2, etc.}}
+
+    # convert counts to emission probabilities
+    for y, xDict in emissions.items():
+        for x, xCount in xDict.items():
+            xDict[x] = xCount / float(count[y] + k)
+
+        # replace with unk
+        emissions[y]["#UNK#"] = k / float(count[y] + k)
+
+    return emissions
+
+
+def predictSentiments(emissions, testfile, outputfile):
+
+   # predicts sequence labels using argmax(emission)
+    # find best #UNK# for later use
+
+    unkTag = "O"
+    unkP = 0
+    for tag in emissions.keys():
+        if emissions[tag]["#UNK#"] > unkP:
+            unkTag = tag
+
+    with open(testfile, encoding="utf-8") as f, open(outputfile, "w", encoding="utf-8") as out:
+        for line in f:
+            if line == "\n":
+                out.write(line)
+            else:
+                word = line.strip().lower()
+                # find highest probability for each word
+                bestProb = 0
+                bestTag = ""
+                for tag in emissions:
+                    if word in emissions[tag]:
+                        if emissions[tag][word] > bestProb:
+                            bestProb = emissions[tag][word]
+                            bestTag = tag
+
+                if bestTag == "":
+                    bestTag = unkTag
+
+                out.write("{} {}\n".format(word, bestTag))
+    print("Completed Prediction")
+
+
+def main(args):
+    data = ["EN", "FR"]
+    if args in data:
+        dir = Path(args)
+        start = time.time()
+        emissions = getEmissions(dir/'train')
+        predictSentiments(emissions, dir/'dev.in', dir/'dev.p1.out')
+        end = time.time()
+        print(f"Elapsed time: {round(end-start,2)}s")
+    else:
+        print("Specified Dataset must be either EN or FR Run again...")
+
+
+if __name__ == "__main__":
+    args = sys.argv
+    main(args[1])
