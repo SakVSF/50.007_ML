@@ -1213,8 +1213,8 @@ I B-NP
 currently I-VP
 looking I-VP
 at B-PP
-about B-NP
-5 I-NP
+about I-PP
+5 B-NP
 years I-NP
 and O
 3 B-NP
