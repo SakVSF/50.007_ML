@@ -4,17 +4,17 @@
 ## Instructions to run the code 
 
 
-### Part 1 : 
+### ML_Project_Part_1 : 
 
  __For EN dataset__ : 
   ```
- python  part1.py  EN 
+ python  ML_Project_Part_1.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p1.out
 ```
 
 __For FR dataset__ :
 ```
-python part1.py FR
+python ML_Project_Part_1.py FR
 python evalResult.py FR/dev.out FR/dev.p1.out
 ```
 -------------------------------------------------------------------------
@@ -22,13 +22,13 @@ python evalResult.py FR/dev.out FR/dev.p1.out
 
  __For EN dataset__ : 
   ```
- python  part2.py  EN 
+ python  ML_Project_Part_2.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p2.out
 ```
 
 __For FR dataset__ :
 ```
-python part2.py FR
+python ML_Project_Part_2.py FR
 python evalResult.py FR/dev.out FR/dev.p2.out
 ```
 ------------------------------------------------------------------------
@@ -36,13 +36,13 @@ python evalResult.py FR/dev.out FR/dev.p2.out
 
  __For EN dataset__ : 
   ```
- python  part3.py  EN 
+python  ML_Project_Part_3.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p3.out
 ```
 
 __For FR dataset__ :
 ```
-python part3.py FR
+python ML_Project_Part_3.py FR
 python evalResult.py FR/dev.out FR/dev.p3.out
 ```
 -----------------------------------------------------------------------
@@ -51,13 +51,13 @@ python evalResult.py FR/dev.out FR/dev.p3.out
 
  __For EN dataset__ : 
   ```
- python  part4.py  EN 
+python  ML_Project_Part_4.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p4.out
 ```
 
 __For FR dataset__ :
 ```
-python part4.py FR
+python ML_Project_Part_4.py FR
 python evalResult.py FR/dev.out FR/dev.p4.out
 ```
 
