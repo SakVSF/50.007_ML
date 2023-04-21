@@ -8,13 +8,13 @@
 
  __For EN dataset__ : 
   ```
- python  ML_Project_Part_1.py  EN 
+ python part1.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p1.out
 ```
 
 __For FR dataset__ :
 ```
-python ML_Project_Part_1.py FR
+python part1.py FR
 python evalResult.py FR/dev.out FR/dev.p1.out
 ```
 -------------------------------------------------------------------------
@@ -22,13 +22,13 @@ python evalResult.py FR/dev.out FR/dev.p1.out
 
  __For EN dataset__ : 
   ```
- python  ML_Project_Part_2.py  EN 
+ python  part2.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p2.out
 ```
 
 __For FR dataset__ :
 ```
-python ML_Project_Part_2.py FR
+python part2.py FR
 python evalResult.py FR/dev.out FR/dev.p2.out
 ```
 ------------------------------------------------------------------------
@@ -36,13 +36,13 @@ python evalResult.py FR/dev.out FR/dev.p2.out
 
  __For EN dataset__ : 
   ```
-python  ML_Project_Part_3.py  EN 
+python part3.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p3.out
 ```
 
 __For FR dataset__ :
 ```
-python ML_Project_Part_3.py FR
+python part3.py FR
 python evalResult.py FR/dev.out FR/dev.p3.out
 ```
 -----------------------------------------------------------------------
@@ -51,13 +51,13 @@ python evalResult.py FR/dev.out FR/dev.p3.out
 
  __For EN dataset__ : 
   ```
-python  ML_Project_Part_4.py  EN 
+python  part4.py  EN 
 python  evalResult.py  EN/dev.out  EN/dev.p4.out
 ```
 
 __For FR dataset__ :
 ```
-python ML_Project_Part_4.py FR
+python part4.py FR
 python evalResult.py FR/dev.out FR/dev.p4.out
 ```
 _Note_ : running the part4 script will run the model on dev.in AND test.in, hence generating dev.p4.out and test.p4.out for the chosen folder
