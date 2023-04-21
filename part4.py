@@ -379,7 +379,7 @@ def mem(dir, weights):
 
 def main(args):
 	data = ["EN", "FR"]
-	#weights_FR= [1, 1, 7, 0, 0.1] #best combination for FR dataset - 0.5286, 0.3597
+	
 	weights_FR = [1, -1, 6, 0, 0]
 	weights_EN= [1.2, 3.35, 6, 3, 1 ]  #best combination for EN dataset 
 	
