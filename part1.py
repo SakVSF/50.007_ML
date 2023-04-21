@@ -2,9 +2,11 @@ import sys
 import time
 from pathlib import Path
 
-
-def addCount(parent, child, d):
-    # Increment the count of [parent][child] in dictionary d
+def Counts(parent, child, d):
+    """
+    Description:
+    Defining and incrementing the count of [parent][child] in a dictionary d
+    """
     if parent in d:
         if child in d[parent]:
             d[parent][child] += 1
@@ -13,23 +15,19 @@ def addCount(parent, child, d):
     else:
         d[parent] = {child: 1}
 
-
-def getEmissions(file, k=1):
+def Emission(file, k=0.5):
     """
-    input = training file
+    Description:
+    input file = dev.in
     output = emission parameters (dict)
-    @param k: Words appearing less than k times will be
-    replaced with #UNK#
-  
+    Words that appear less than k times will be replaced with #UNK#
+    dictionary format = {i: {o:emission prob}}
     """
-    emissions = {}
+    emission = {}
     count = {}
-
     with open(file, encoding="utf-8") as f:
         for line in f:
             temp = line.strip()
-
-            # ignore empty lines
             if len(temp) == 0:
                 continue
             else:
@@ -37,75 +35,71 @@ def getEmissions(file, k=1):
                 x = temp[:last_space_index].lower()
                 y = temp[last_space_index + 1:]
 
-                # update count(y)
+                # updating count[y]
                 if y in count:
                     count[y] += 1
                 else:
                     count[y] = 1
 
-                # update count(y->x)
-                addCount(y, x, emissions)
-
+                # updating count(y->x)
+                Counts(y, x, emission)
     #count = {tag1: count1, tag2: count2, etc}
-
     #emission = {tag: {word1:count1, word2:count2, etc.}}
+    #converting the counts to emission probabilities
+    for y, x_Dictionary in emission.items():
+        for x, x_Count in x_Dictionary.items():
+            x_Dictionary[x] = x_Count / float(count[y] + k)
+        #replacing with a UNK variable
+        emission[y]["#UNK#"] = k / float(count[y] + k)
+    return emission
 
-    # convert counts to emission probabilities
-    for y, xDict in emissions.items():
-        for x, xCount in xDict.items():
-            xDict[x] = xCount / float(count[y] + k)
-
-        # replace with unk
-        emissions[y]["#UNK#"] = k / float(count[y] + k)
-
-    return emissions
-
-
-def predictSentiments(emissions, testfile, outputfile):
-
-   # predicts sequence labels using argmax(emission)
-    # find best #UNK# for later use
-
-    unkTag = "O"
+def PredictionSentiments(emission, testfile, outputfile):
+    """
+    Description:
+    predicts sequence labels using argmax(emission)
+    # finds the best #UNK# for later use
+    """
+    unktag = "O"
     unkP = 0
-    for tag in emissions.keys():
-        if emissions[tag]["#UNK#"] > unkP:
-            unkTag = tag
-
+    for tag in emission.keys():
+        if emission[tag]["#UNK#"] > unkP:
+            unktag = tag
     with open(testfile, encoding="utf-8") as f, open(outputfile, "w", encoding="utf-8") as out:
         for line in f:
             if line == "\n":
                 out.write(line)
             else:
                 word = line.strip().lower()
-                # find highest probability for each word
-                bestProb = 0
-                bestTag = ""
-                for tag in emissions:
-                    if word in emissions[tag]:
-                        if emissions[tag][word] > bestProb:
-                            bestProb = emissions[tag][word]
-                            bestTag = tag
+                #The code below finds the highest probability for each word
+                bestprobability = 0
+                besttag = ""
+                for tag in emission:
+                    if word in emission[tag]:
+                        if emission[tag][word] > bestprobability:
+                            bestprobability = emission[tag][word]
+                            besttag = tag
 
-                if bestTag == "":
-                    bestTag = unkTag
+                if besttag == "":
+                    besttag = unktag
 
-                out.write("{} {}\n".format(word, bestTag))
-    print("Completed Prediction")
-
+                out.write("{} {}\n".format(word, besttag))
+    print("Prediction is generated successfully")
 
 def main(args):
-    data = ["EN", "FR"]
-    if args in data:
+    """
+    Description:
+    Inputting of the necessary files and the defining of the output file dev.p1.out
+    """
+    datasets = ["EN", "FR"]
+    if args in datasets:
         dir = Path(args)
         start = time.time()
-        emissions = getEmissions(dir/'train')
-        predictSentiments(emissions, dir/'dev.in', dir/'dev.p1.out')
+        emission = Emission(dir/'train')
+        PredictionSentiments(emission, dir/'dev.in', dir/'dev.p1.out')
         end = time.time()
-        print(f"Elapsed time: {round(end-start,2)}s")
+        print(f"Time taken: {round(end-start,2)}s")
     else:
-        print("Specified Dataset must be either EN or FR Run again...")
-
+        print("The dataset to be entered must either be EN or FR, please try again.")
 
 if __name__ == "__main__":
     args = sys.argv

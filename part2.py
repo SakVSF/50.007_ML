@@ -1,158 +1,145 @@
-from part1 import getEmissions, addCount
-import sys
 import time
+import sys
 from pathlib import Path
 from math import log
+from part1 import Emission, Counts
 
+def Transition(file):
+    """
+    Description:
+    Input = 'file', Output = transition parameters
+    Also return Dict: {y_i-1: {y_i: transition}}
+    """
+    start = "_START"
+    stop = "_STOP"
+    transition = {}
+    count = {start: 0}
+    previous = start
+    with open(file, encoding="utf-8") as f:
+        for line in f:
+            temp = line.strip()
+            if len(temp) == 0:
+                Counts(previous, stop, transition)
+                previous = start
+            else:
+                last_index = temp.rfind(" ")
+                current = temp[last_index + 1:]
+                #updating count(start) upon finding new sentence
+                if previous == start:
+                    count[start] += 1
+                #updating count(y)
+                if current in count:
+                    count[current] += 1
+                else:
+                    count[current] = 1
+                Counts(previous, current, transition)
+                previous = current
 
-def getTransitions(file): 
-	'''
-	transitions is a nested dictionary of the dict format -> { yi-1 : {yi : probability of transition fron yi-1 to yi}}
-	'''
-	start = "_START"
-	stop = "_STOP" 
-	transitions = {}   
-	count = {start: 0}
-	prev_tag = start
-	with open(file, encoding="utf-8") as f:
-		for line in f:
-			sentence = line.strip()
-			# sentence has ended
-			if len(sentence) == 0:
-				addCount(prev_tag, stop, transitions)   
-				prev_tag = start                         #set prev_tag to START as starting a new sentence in next iteration
+        #adding up count(previous, stop) if no blank lines are found at the end of the file
+        if previous != start:
+            Counts(previous, stop, transition)
+            previous = start
 
-			# in the middle of a sentence
-			else:
-				space = sentence.rfind(" ")
-				curr_tag = sentence[space + 1:]
+    #converting counts to transitions
+    for previous, currentdict in transition.items():
+        for current, currentcount in currentdict.items():
+            currentdict[current] = currentcount / float(count[previous])
+    return transition
 
-				# A new sentence, update count(START)
-				if prev_tag == start:
-					count[start] += 1                    
-
-				# update count(y)
-				if curr_tag in count:
-					count[curr_tag] += 1
-				else:
-					count[curr_tag] = 1
-				
-				# update count(prev, curr)
-				addCount(prev_tag, curr_tag, transitions)
-
-				prev_tag = curr_tag
-
-
-		#reached end of file 
-		# add count(prev, stop) if no blank lines at EOF
-		if prev_tag != start:
-			addCount(prev_tag, stop, transitions)
-			prev_tag = start
-
-	# Calculate transition probabilities 
-	for prev_tag, currDict in transitions.items():   
-		for curr_tag, currCount in currDict.items():
-			currDict[curr_tag] = currCount /( float(count[prev_tag]))   # count(yi−1, yi) / count(y-)
-
-	return transitions
-
-
-
-def convert(file):
-    # convert train file to set of unique vocab
+def UniqVocab(file):
+    """
+    Description:
+    converting the training file into 'vocab's
+    """
     out = set()
     with open(file, encoding="utf-8") as f:
         for line in f:
             temp = line.strip()
 
-            # ignore empty lines
+            #ignoring empty lines
             if len(temp) == 0:
                 continue
             else:
-                last_space_index = temp.rfind(" ")
-                word = temp[:last_space_index].lower()
+                lastindex = temp.rfind(" ")
+                word = temp[:lastindex].lower()
                 out.add(word)
 
     return out
 
-
-def isMissing(child, parent, hashmap):
-    # check whether child's parent is parent in given dictionary
+def Missing(child, parent, hashmap):
+    """
+    Description:
+    To check whether a child's parent is actually the parent in the given dictionary
+    """
     return (child not in hashmap[parent]) \
         or (hashmap[parent][child] == 0)
 
-
-def viterbiAlgo(emissions, transitions, vocab, lines):
-
-    tags = emissions.keys()
+def Viterbi(emission, transition, vocab, lines):
+    """
+    Description:
+    Defining and executing the viterbi algorithm to help make a prediction
+    """
+    tag = emission.keys()
     score = {}
     score[0] = {"_START": [0.0, None]}
-
-    # forward algorithm
     for i in range(1, len(lines) + 1):
-        word = lines[i - 1].lower()
-
-        # Replace word with #UNK# if not in train
-        if word not in vocab:
-            word = "#UNK#"
-
-        for currTag in tags:
-            highScore = None
+        words = lines[i - 1].lower()
+        
+        #Replace 'words' with variable #UNK# if not present in 'train' file
+        if words not in vocab:
+            words = "#UNK#"
+        for currenttag in tag:
+            highscore = None
             parent = None
 
-            # Check that word can be emitted from currTag
-            if isMissing(word, currTag, emissions):
+            #Checking whether words can be emitted from currenttag
+            if Missing(words, currenttag, emission):
                 continue
+            b = emission[currenttag][words]
+            for previoustag, previousscore in score[i - 1].items():
 
-            b = emissions[currTag][word]
-
-            for prevTag, prevScore in score[i - 1].items():
-
-                # Check that currTag can transit from prevTag and prevPie exist
-                if isMissing(currTag, prevTag, transitions) or \
-                        prevScore[0] is None:
+                #Checking that currenttag can transmit from previoustag and that previos pie exists
+                if Missing(currenttag, previoustag, transition) or \
+                        previousscore[0] is None:
                     continue
 
-                a = transitions[prevTag][currTag]
+                a = transition[previoustag][currenttag]
 
-                # Calculate score
-                currScore = prevScore[0] + log(a) + log(b)
-
-                if highScore is None or currScore > highScore:
-                    highScore = currScore
-                    parent = prevTag
+                #Calculating the score
+                currentscore = previousscore[0] + log(a) + log(b)
+                if highscore is None or currentscore > highscore:
+                    highscore = currentscore
+                    parent = previoustag
 
             # Update score
             if i in score:
-                score[i][currTag] = [highScore, parent]
+                score[i][currenttag] = [highscore, parent]
             else:
-                score[i] = {currTag: [highScore, parent]}
+                score[i] = {currenttag: [highscore, parent]}
 
     # Final iteration stop case
-    highScore = None
+    highscore = None
     parent = None
 
-    for prevTag, prevScore in score[len(lines)].items():
-        # Check prev can lead to a stop
-        if "_STOP" in transitions[prevTag]:
-            a = transitions[prevTag]["_STOP"]
-            if a == 0 or prevScore[0] is None:
+    for previoustag, previousscore in score[len(lines)].items():
+        #Checking if previous can lead to a stop
+        if "_STOP" in transition[previoustag]:
+            a = transition[previoustag]["_STOP"]
+            if a == 0 or previousscore[0] is None:
                 continue
+            currentscore = previousscore[0] + log(a)
+            if highscore is None or currentscore > highscore:
+                highscore = currentscore
+                parent = previoustag
+    score[len(lines) + 1] = {"_STOP": [highscore, parent]}
 
-            currScore = prevScore[0] + log(a)
-            if highScore is None or currScore > highScore:
-                highScore = currScore
-                parent = prevTag
-
-    score[len(lines) + 1] = {"_STOP": [highScore, parent]}
-
-    # backtracking to get prediction
+    #Attempting to backtrack to get a prediction
     prediction = []
-    curr = "_STOP"
+    current = "_STOP"
     i = len(lines)
 
     while True:
-        parent = score[i + 1][curr][1]
+        parent = score[i + 1][current][1]
         if parent is None:
             #print(i)
             parent = list(score[i].keys())[0]
@@ -161,48 +148,51 @@ def viterbiAlgo(emissions, transitions, vocab, lines):
             break
 
         prediction.append(parent)
-        curr = parent
+        current = parent
         i -= 1
 
     prediction.reverse()
     return prediction
 
-
-def predictWithViterbi(emissions, transitions, vocab, inputFile, outputFile):
+def ViterbiPrediction(emission, transition, vocab, inputFile, outputFile):
+    """
+    Description:
+    To run the viterbi algorithm with the previously defined variables and generate a prediction
+    """
     with open(inputFile, encoding="utf-8") as f, open(outputFile, "w", encoding="utf-8") as out:
         sentence = []
-
         for line in f:
-            # form sentence
+            #To form sentences
             if line != "\n":
-                word = line.strip()
-                sentence.append(word)
-
-            # predict tag sequence
+                words = line.strip()
+                sentence.append(words)
+            #For prediction of the tag sequence
             else:
-                sequence = viterbiAlgo(emissions, transitions, vocab, sentence)
+                sequence = Viterbi(emission, transition, vocab, sentence)
                 for i in range(len(sequence)):
                     out.write("{} {}\n".format(sentence[i], sequence[i]))
                 out.write("\n")
                 sentence = []
-    print("Prediction Done!")
-
+    print("Prediction is generated successfully")
 
 def main(args):
+    """
+    Description:
+    Inputting of the necessary files and the defining of the output file dev.p2.out
+    """
     data = ["EN", "FR"]
     if args in data:
         dir = Path(args)
         start = time.time()
-        emissions = getEmissions(dir/'train')
-        transitions = getTransitions(dir/'train')
-        vocab = convert(dir/'train')
-        predictWithViterbi(emissions, transitions, vocab,
+        emission = Emission(dir/'train')
+        transition = Transition(dir/'train')
+        vocab = UniqVocab(dir/'train')
+        ViterbiPrediction(emission, transition, vocab,
                            dir/'dev.in', dir/'dev.p2.out')
         end = time.time()
-        print(f"Elapsed time: {round(end-start,2)}s")
+        print(f"Time taken: {round(end-start,2)}s")
     else:
-        print("Specified Dataset must be either EN, SG or CN, Run again...")
-
+        print("The dataset to be entered must either be EN or FR, please try again.")
 
 if __name__ == "__main__":
     args = sys.argv

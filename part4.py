@@ -1,39 +1,60 @@
 from math import log
-#from evalResult import eval
 import numpy as np
 import pandas as pd
-import copy
 import sys
-import time
-from pathlib import Path
-
-from part1 import addCount
-from part2 import isMissing, convert, getTransitions
-_parentless_stop = 0
-_deep_parentless_count = 0
 
 
 
+from part1 import Counts
+from part2 import Missing, UniqVocab, Transition
+no_parent = 0
+no_parent_count = 0
+
+
+#helper function
 def calculate_emission(dict):
-	for _, tagCountDict in dict.items():
-		count = sum(tagCountDict.values())   #count(y)
-		for tag, tagCount in tagCountDict.items():
-			tagCountDict[tag] = tagCount / count    # count(y->x)/count(y)
+	'''
+	Description:
+	Input = "dict" storing emission counts
+	Output =modified dictionary with emission probability
+	'''
+	for _, tag_to_word in dict.items():
+		count = sum(tag_to_word.values())   #count(y)
+		for tag, tagCount in tag_to_word.items():
+			tag_to_word[tag] = tagCount / count    # count(y->x)/count(y)
 	
 	return dict
 
+#helper function
+def maxScores(i, maxScore, curr_tag, parent_tag, score):
+	'''checks if index i is in score dictionary. 
+	   If it is, updates the maxScore and parent tag for the given current tag. 
+	   If it is not, create a dictionary for the current tag under index i
+	   '''
+	if i in score:
+		score[i][curr_tag] = [maxScore, parent_tag]
+	else:
+		score[i] = {curr_tag: [maxScore, parent_tag]}
 
-def discriminative_emissions(file, k=1):
+
+
+def emissionProbs(file):
 	"""
-	emissions, ackward_emissions and forward_emissions are nested dictionaries of the format = {x(word): {y(tag): probability of x emitting y}}
+	Description:
+	emissionProbs, backwardProbs and forwardProbs are nested dictionaries of the format = {x(word): {y(tag): probability of x emitting y}}
 	note this is different from HMM. Here emission probability is the probability of a word emitting a tag. In HMM it was a tag emitting a word
+
+	Input = file 
+	Output = emissionProbs, forwardProbs, backwardProbs, unique_tags(set of tags found in file)
+
 	"""
-	emissions = {}
-	forward_emissions = {}
-	backward_emissions = {}
-	 
 	words = []
 	tags = []
+	emissionProbs = {}
+	forwardProbs = {}
+	backwardProbs = {}
+	 
+	
 	with open(file, encoding="utf-8") as f:
 		for line in f:
 			sentence = line.strip()
@@ -43,7 +64,8 @@ def discriminative_emissions(file, k=1):
 			# if contains word-tag pair
 			else:
 				space= sentence.rfind(" ")
-				word = sentence[:space].lower()  #convert all words to lowercase 
+				#word = sentence[:space]
+				word = sentence[:space].lower()  #converts all words to lowercase 
 				tag = sentence[space + 1:]          
 				words.append(word)
 				tags.append(tag)
@@ -52,30 +74,31 @@ def discriminative_emissions(file, k=1):
 	for i in range(0, len(words)):
 		word = words[i]
 
+
 		if i == 0: 
+			#start of sentence
 			prev_word = 'START'
 		else:
-			
 			prev_word = words[i-1] 
 
 		if i == len(words)-1:
+			#end of sentence
 			next_word = 'END'
 		else:
 			next_word = words[i+1]
 
 		tag = tags[i]
 
-		#incrementing count of emission for word, word-1, word+1 
-		addCount(word, tag, emissions)              
-		addCount(prev_word, tag, forward_emissions)
-		addCount(next_word, tag, backward_emissions)
+		#updating emission counts for word, word-1, word+1 in respective dictionaries
+		Counts(word, tag, emissionProbs)              
+		Counts(prev_word, tag, forwardProbs)
+		Counts(next_word, tag, backwardProbs)
 
 
-	#calculating emission probabilities 
-
-	emissions = calculate_emission(emissions)
-	forward_emissions = calculate_emission(forward_emissions)
-	backward_emissions = calculate_emission(backward_emissions)
+	#calculating all emission probabilities 
+	emissionProbs = calculate_emission(emissionProbs)
+	forwardProbs = calculate_emission(forwardProbs)
+	backwardProbs = calculate_emission(backwardProbs)
 
 	'''
 	If a word appears less than k times in the training set, it is replaced with #UNK#.
@@ -83,46 +106,39 @@ def discriminative_emissions(file, k=1):
 	'''
 	unique_tags = set(tags)
 
-	#calculating emission probabilities for UNK token 
+	#calculating emission counts for UNK token 
 
-	tag_counts = {}   #dict format: { yi : count(yi)}
+	tagCounts = {}   #dict format: { yi : count(yi)}
 	for tag in tags:
-		if tag in tag_counts:
-			tag_counts[tag] += 1
+		if tag in tagCounts:
+			tagCounts[tag] += 1
 		else:
-			tag_counts[tag] = 1
-	total_count = sum(tag_counts.values())   #totalcount
-	for key, count in tag_counts.items():
-		tag_counts[key] = count/total_count    # count(y)/totalcount
+			tagCounts[tag] = 1
+	total_count = sum(tagCounts.values())   #totalcount
+	for key, count in tagCounts.items():
+		tagCounts[key] = count/total_count    # count(y)/totalcount
 
-	emissions["#UNK#"] = tag_counts            # { "#UNK#"" : {yi : count(yi)/totalcount}}   
-	forward_emissions["#UNK#"] = tag_counts
-	backward_emissions["#UNK#"] = tag_counts
+	#calculating emission probabilities for UNK token
+	emissionProbs["#UNK#"] = tagCounts            # { "#UNK#"" : {yi : count(yi)/totalcount}}   
+	forwardProbs["#UNK#"] = tagCounts
+	backwardProbs["#UNK#"] = tagCounts
 
-	return emissions, forward_emissions, backward_emissions, unique_tags
-
-
-
-
-def setHighscores(i, highscore, curr_tag, parent_tag, score):
-	'''checks if i is in highscore dictionary. 
-	   If it is, updates the highscore and parent tag for the given current tag. 
-	   If it is not, create a dictionary for the current tag under i 
-	   '''
-	if i in score:
-		score[i][curr_tag] = [highscore, parent_tag]
-	else:
-		score[i] = {curr_tag: [highscore, parent_tag]}
+	return emissionProbs, forwardProbs, backwardProbs, unique_tags
 
 
 
-def discriminativeViterbiAlgo(emissions, forward_emissions, backward_emissions, transitions, weights, vocab, tags, sentence):
+
+
+def memmViterbi(emissionProbs, forwardProbs, backwardProbs, transitions, weights, vocab, tags, sentence):
 	'''
-	highscores is a dictionary of format : {yi : {maximum probability , parent tag}}
-
+	Decription:
+	Defining and executing the discriminative/modified viterbi algorithm to help make a prediction
+	
 '''
-	highscores = {}
-	highscores[0] = {"_START": [0.0, None]}
+	#score is a dictionary of format : {yi : {maximum probability , parent tag}}
+
+	score = {}
+	score[0] = {"_START": [0.0, None]}
 
 	
 	# forward algorithm
@@ -132,12 +148,12 @@ def discriminativeViterbiAlgo(emissions, forward_emissions, backward_emissions, 
 		if i>1:
 			prev_word = sentence[i-1].lower() 
 		else:
-			prev_word = 'START'
+			prev_word = 'START'  #beginning of sentence
 
 		if i < len(sentence)-1 : 
 			next_word = sentence[i+1].lower() 
 		else:
-			next_word = 'END'
+			next_word = 'END'     #end of sentence
 	
 
 		#if word/prev_word/next_word not seen previously in training set, replace with #UNK#
@@ -149,121 +165,161 @@ def discriminativeViterbiAlgo(emissions, forward_emissions, backward_emissions, 
 			next_word = "#UNK#"
 		
 
-		for currTag in tags:
+		for currenttag in tags:
 			highScore = None
-			parentTag = None
+			parent= None
 
-			if i == 0: #then prevTag only has 1 option: "_START":
-				prevScoreParentPair = highscores[0]["_START"]
-				if isMissing(currTag, "_START", transitions) or isMissing(currTag, word, emissions):
-					setHighscores(i+1, None, currTag, None, highscores)
+			if i == 0: #then previoustag only has 1 option: "_START":
+
+				previousscore = score[0]["_START"]
+
+				if Missing(currenttag, "_START", transitions) or \
+					Missing(currenttag, word, emissionProbs): 
+
+					#if tag not found in transition or emission dictionaries 
+					maxScores(i+1, None, currenttag, None, score)   #set score and parentto None
+				
 				else:
-					a = transitions["_START"][currTag]
-					b = emissions[word][currTag] 
-					b_forward = forward_emissions[prev_word][currTag] if not isMissing(currTag, prev_word, forward_emissions) else 1
-					b_backward = backward_emissions[next_word][currTag] if not isMissing(currTag, next_word, backward_emissions) else 1
-
-					tempScore = prevScoreParentPair[0] * weights[0] + log(a) * weights[1] + log(b) * weights[2] + log(b_forward) * weights[3] + log(b_backward) * weights[4] #+ log(b_forward2) * weights[5] + log(b_backward2) * weights[6]
+					a = transitions["_START"][currenttag]
+					b = emissionProbs[word][currenttag] 
 					
-					highScore = tempScore
-					parentTag = "_START"
-					setHighscores(i+1, highScore, currTag, parentTag, highscores)
+					if Missing(currenttag, prev_word, forwardProbs):  #if no path from prev_word to current tag 
+						forward = 1
+					else: 
+						forward = forwardProbs[prev_word][currenttag] 
+					
+					if Missing(currenttag, next_word, backwardProbs):   #if no path from current tag to next word 
+						backward = 1
+					else :
+						backward = backwardProbs[next_word][currenttag] 
 
-			else: #prevTags can be any of the available tags
-				for prevTag in tags:	
-					prevScoreParentPair = highscores[i][prevTag]
-					# if prev node is disjointed, aka no score
-					if prevScoreParentPair[0] == None or isMissing(currTag, prevTag, transitions) or isMissing(currTag, word, emissions):
-						#then this prevTag has no path to currTag
+					#calculating the score
+					currentscore = previousscore[0] * weights[0] + log(a) * weights[1] + log(b) * weights[2] + log(forward) * weights[3] + log(backward) * weights[4] 
+					
+					highScore = currentscore
+					parent= "_START"
+					maxScores(i+1, highScore, currenttag, parent, score)
+
+			else: #middle of sentence
+				for previoustag in tags:	
+					previousscore = score[i][previoustag]
+
+					#if previoustag has no path to currenttag
+					if previousscore[0] == None or Missing(currenttag, previoustag, transitions) or Missing(currenttag, word, emissionProbs):
 						continue
-					else:
-						a = transitions[prevTag][currTag]
-						b = emissions[word][currTag] # if not isMissing(currTag, word, emissions) else 1
-						b_forward = forward_emissions[prev_word][currTag] if not isMissing(currTag, prev_word, forward_emissions) else 1
-						b_backward = backward_emissions[next_word][currTag] if not isMissing(currTag, next_word, backward_emissions) else 1
 
-						tempScore = prevScoreParentPair[0] * weights[0] + log(a) * weights[1] + log(b) * weights[2] + log(b_forward) * weights[3] + log(b_backward) * weights[4] 
+					else:
+						a = transitions[previoustag][currenttag]
+						b = emissionProbs[word][currenttag] 
 						
-						if highScore is None or tempScore > highScore:
-							highScore = tempScore
-							parentTag = prevTag
+						if  Missing(currenttag, prev_word, forwardProbs): #if no path from prev_word to current tag 
+							forward = 1
+						else:
+							forward = forwardProbs[prev_word][currenttag]
+
+						
+						if Missing(currenttag, next_word, backwardProbs): #if no path from current tag to next word 
+							backward =1 
+						else: 
+							backward = backwardProbs[next_word][currenttag] 
+
+						#calculating the score 
+						currentscore= previousscore[0] * weights[0] + log(a) * weights[1] + log(b) * weights[2] + log(forward) * weights[3] + log(backward) * weights[4] 
+						
+						if highScore is None or currentscore> highScore:
+							highScore = currentscore
+							parent= previoustag
 
 				if highScore is None:
-					#if even after iterating through all possibilities the highscore is none, this means there were no possible paths from the previous node, and so we set this node as disjointed
-					#disjointed means, no score and no parent
-					setHighscores(i+1, None, currTag, None, highscores)
+					#if no possible paths from the previous tag -> no score and no parent
+					maxScores(i+1, None, currenttag, None, score)
 				else:
-					setHighscores(i+1, highScore, currTag, parentTag, highscores)
+					maxScores(i+1, highScore, currenttag, parent, score)
 			
-	# _STOP case
+	# final iteration stop case
 	highScore = None
-	parentTag = None
+	parent= None
 	i = len(sentence)
-	for prevTag in tags:	
-		prevScoreParentPair = highscores[i][prevTag]
-		# if prev node is disjointed, aka no score
-		if prevScoreParentPair[0] == None or isMissing("_STOP", prevTag, transitions):
+	for previoustag in tags:	
+		previousscore = score[i][previoustag]
+		
+		if previousscore[0] == None or Missing("_STOP", previoustag, transitions):
+			# if no path from previous tag to STOP
 			continue
 		else:
-			prevScoreParentPair = highscores[i][prevTag]
-			a = transitions[prevTag]["_STOP"]
-			b_forward = forward_emissions[prev_word][currTag] if not isMissing(currTag, prev_word, forward_emissions) else 1
-			tempScore = prevScoreParentPair[0] * weights[0] + log(a) * weights[1] + log(b_forward) * weights[3]
-			if highScore is None or tempScore > highScore:
-				highScore = tempScore
-				parentTag = prevTag
+			previousscore = score[i][previoustag]
+			a = transitions[previoustag]["_STOP"]
+
+			
+			if Missing(currenttag, prev_word, forwardProbs):  #if no path from prev_word to currenttag
+				forward = 1
+			else:  
+				forward = forwardProbs[prev_word][currenttag]
+
+			#note that no emission probability or backward probability is calculated since it is stop case.
+			currentscore = previousscore[0] * weights[0] + log(a) * weights[1] + log(forward) * weights[3]
+			if highScore is None or currentscore > highScore:
+				highScore = currentscore
+				parent= previoustag
 	
 	if highScore is None:
-		#this means there are no possible paths to _STOP		
-		setHighscores(i+1, None, "_STOP", None, highscores)
+		#if  no possible paths to _STOP		
+		maxScores(i+1, None, "_STOP", None, score)
 	else:
-		setHighscores(i+1, highScore, "_STOP", parentTag, highscores)
+		maxScores(i+1, highScore, "_STOP", parent, score)
 	
 
 
 	#backpropagation
 	prediction = []
-	currTag = "_STOP"	
+	currenttag = "_STOP"	
+
 	for i in range(len(sentence)+1, 0, -1): #back to front
-		parentTag = highscores[i][currTag][1]
-		if parentTag == None:
-			global _parentless_stop
-			_parentless_stop += 1			
-			#this is a disjointed sentence
-			#lets choose a parent that has a parent
-			candidateHighscore = None
-			bestParentCandidateTag = None
-			for candidateParentTag in list(highscores[i-1].keys()):
-				candidateScoreParentPair = highscores[i-1][candidateParentTag]
-				if candidateScoreParentPair[1] == None or candidateScoreParentPair[0] == None:
+		parent= score[i][currenttag][1]
+
+		if parent== None:
+			global no_parent
+			no_parent += 1			
+			
+			highScore = None
+			bestParent = None
+
+			for pair in list(score[i-1].keys()):
+				score_parent = score[i-1][pair]
+				temp_score = score_parent[0]
+				temp_parent = score_parent[1]
+
+				if temp_parent== None or temp_score== None:
 					continue
 				else:
-					if candidateHighscore == None or candidateScoreParentPair[0] > candidateHighscore:
-						candidateHighscore = candidateScoreParentPair[0]
-						bestParentCandidateTag = candidateParentTag
+					if highScore == None or temp_score > highScore:
+						highScore = temp_score 
+						bestParent = temp_parent
 
-			if bestParentCandidateTag == None:
-				global _deep_parentless_count
-				_deep_parentless_count += 1
-				if list(highscores[i-1].keys())[0] == "_START":
-					parentTag = "_START"
+			if bestParent== None:
+				global no_parent_count
+				no_parent_count += 1
+				if list(score[i-1].keys())[0] == "_START":
+					parent= "_START"
 				else:
-					parentTag = 'O' #defaults to O if no parent because O is the most common tag
+					parent= 'O' #defaults to O if no parent because O is the most common tag
+			
 			else:
-				parentTag = bestParentCandidateTag
+				parent= bestParent
 		
-		if parentTag == "_START":
+		#reached end 
+		if parent== "_START":
 			break
 			
-		# print(currTag, parentTag)
-		prediction.append(parentTag)
-		currTag = parentTag
+		
+		prediction.append(parent)
+		currenttag = parent 
 
 	prediction.reverse()
 	return prediction
 
 
-def ViterbiLoop(emissions, forward_emissions, backward_emissions, transitions, weights, vocab, tags,  inputFile, outputFile):
+def ViterbiLoop(emissionProbs, forwardProbs, backwardProbs, transitions, weights, vocab, tags,  inputFile, outputFile):
 
 	with open(inputFile) as inp, open(outputFile, "w", encoding="UTF-8") as out:
 		sentence = []
@@ -275,7 +331,7 @@ def ViterbiLoop(emissions, forward_emissions, backward_emissions, transitions, w
 
 			#end of sentence reached. predict tags for sentence and write to output file
 			else:
-				sequence = discriminativeViterbiAlgo(emissions, forward_emissions, backward_emissions, transitions, weights, vocab, tags,  sentence)
+				sequence = memmViterbi(emissionProbs, forwardProbs, backwardProbs, transitions, weights, vocab, tags,  sentence)
 				
 				for i in range(len(sequence)):
 					out.write("{} {}\n".format(sentence[i], sequence[i]))
@@ -310,20 +366,23 @@ def mem(dir, weights):
 	tags = tags[::-1]   #sorting tags in descending order
  
 
-	emissions, forward_emissions, backward_emissions, tags = discriminative_emissions(dir + '/train')
+	emissions, forwardProbs, backwardProbs, tags = emissionProbs(dir + '/train')
 
-	transitions = getTransitions(dir + '/train')
-	vocab = convert(dir + '/train')
-	ViterbiLoop(emissions, forward_emissions, backward_emissions, transitions, weights, vocab, tags, dir +'/dev.in', dir + '/dev.p4.out')
+	transitions = Transition(dir + '/train')
+	vocab = UniqVocab(dir + '/train')
+	ViterbiLoop(emissions, forwardProbs, backwardProbs, transitions, weights, vocab, tags, dir +'/dev.in', dir + '/dev.p4.out')
+	#run on test set 
 
-
+	ViterbiLoop(emissions, forwardProbs, backwardProbs, transitions, weights, vocab, tags, dir +'/test.in', dir + '/test.p4.out')
 		
 	
 
 def main(args):
 	data = ["EN", "FR"]
-	weights_FR= [1.5, 1, 7, 0, 0.1] #best combination for FR dataset 
-	weights_EN= [1,3,6,2,1] #best combination for EN dataset 
+	#weights_FR= [1, 1, 7, 0, 0.1] #best combination for FR dataset - 0.5286, 0.3597
+	weights_FR = [1, -1, 6, 0, 0]
+	weights_EN= [1.2, 3.35, 6, 3, 1 ]  #best combination for EN dataset 
+	
 	if args in data:
 		if args == "EN":
 			mem(args, weights_EN)

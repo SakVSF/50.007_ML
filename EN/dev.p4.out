@@ -108,7 +108,7 @@ serious I-NP
 noobs B-NP
 . O
 
-fckn O
+fckn B-NP
 emily O
 rodriguez B-NP
 did B-VP
@@ -159,7 +159,7 @@ y B-ADVP
 every B-NP
 nigga I-NP
 tryna B-VP
-grow O
+grow B-NP
 they B-NP
 hair I-NP
 out B-PRT
@@ -224,7 +224,7 @@ two I-NP
 box I-NP
 of I-NP
 chocolate I-NP
-from B-PP
+from I-NP
 sister O
 . O
 . O
@@ -257,7 +257,7 @@ me B-NP
 but O
 I B-NP
 'm B-VP
-so O
+so I-VP
 anxious B-NP
 beacuse I-NP
 of B-PP
@@ -341,8 +341,8 @@ http://is.gd/ffDb9 O
 I B-NP
 kept I-NP
 telling O
-niggers O
-it'd B-NP
+niggers B-NP
+it'd I-NP
 happen I-NP
 . O
 Come B-VP
@@ -353,7 +353,7 @@ boardroom I-NP
 full I-NP
 of B-PP
 niggers B-NP
-3times O
+3times I-NP
 my B-NP
 age B-NP
 . O
@@ -472,7 +472,7 @@ http://bit.ly/cBvt1u O
 @ashhleybrookee O
 it B-NP
 may B-VP
-be I-VP
+be B-VP
 nasty O
 but O
 ... O
@@ -670,7 +670,7 @@ RT O
 @rockerfuckerak O
 : O
 What B-NP
-'s B-NP
+'s B-VP
 done B-VP
 is B-VP
 done B-VP
@@ -683,7 +683,7 @@ alone I-NP
 and O
 do B-VP
 n't I-VP
-regret B-NP
+regret O
 . O
 Sometimes O
 somethings B-NP
@@ -782,8 +782,8 @@ the B-NP
 uk I-NP
 this B-NP
 year I-NP
-, O
-you B-NP
+, I-NP
+you O
 seen O
 them O
 ? O
@@ -829,7 +829,7 @@ tonight B-NP
 !! O
 *hmph* O
 
-@Phoebe1_ O
+@Phoebe1_ B-NP
 and O
 i B-NP
 also B-ADVP
@@ -845,7 +845,7 @@ hoppaa B-NP
 they B-NP
 were B-VP
 cool B-ADJP
-too B-ADVP
+too B-NP
 !! O
 
 " O
@@ -878,8 +878,8 @@ RT O
 Eyeopener I-NP
 vs I-NP
 . O
-Ryerson O
-Quidditch B-NP
+Ryerson B-NP
+Quidditch I-NP
 team I-NP
 this B-NP
 Sunday B-NP
@@ -911,7 +911,7 @@ too B-NP
 Luckily B-NP
 for B-PP
 me B-NP
-next B-NP
+next I-NP
 is B-VP
 only B-NP
 Monday I-NP
@@ -991,7 +991,7 @@ http://tinyurl.com/233u5lu O
 
 My B-NP
 first I-NP
-assignment B-NP
+assignment O
 was B-VP
 a B-NP
 medical I-NP
@@ -1123,7 +1123,7 @@ I B-NP
 'm B-VP
 scared B-VP
 " O
-#pow#pow#pow@Cowboy_Wingo O
+#pow#pow#pow@Cowboy_Wingo B-NP
 
 Gotta B-VP
 love B-NP
@@ -1333,7 +1333,7 @@ do B-VP
 
 Was B-VP
 hard B-NP
-work B-NP
+work I-NP
 going B-VP
 to B-PP
 the B-NP
@@ -1399,7 +1399,7 @@ Less B-NP
 is B-VP
 More B-NP
 - O
-http://ow.ly/2FwyX O
+http://ow.ly/2FwyX B-NP
 
 No B-NP
 bike I-NP
@@ -1453,12 +1453,12 @@ stage B-NP
 during/before I-NP
 kings I-NP
 and O
-queens O
+queens B-NP
 :( B-INTJ
 (( O
 
 http://bit.ly/aTTQYq O
-When B-ADVP
+When O
 Pepsi O
 to O
 ring O
@@ -1470,11 +1470,10 @@ winning O
 a O
 Nokia O
 5800 O
-? O
 
 @Jezkwon O
 @kpop_stuff B-NP
-Tweet B-VP
+Tweet I-NP
 me B-NP
 a B-NP
 member I-NP
@@ -1490,7 +1489,7 @@ morning I-NP
 ( O
 : O
 
-@BexsterBexster O
+@BexsterBexster B-NP
 @shinobi32768 O
 I B-NP
 've B-VP
@@ -1502,7 +1501,7 @@ week I-NP
 , O
 do B-VP
 n't I-VP
-really B-ADVP
+really B-ADJP
 have B-VP
 a B-NP
 favourite I-NP
