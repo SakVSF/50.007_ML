@@ -60,5 +60,5 @@ __For FR dataset__ :
 python ML_Project_Part_4.py FR
 python evalResult.py FR/dev.out FR/dev.p4.out
 ```
-
+_Note_ : running the part4 script will run the model on dev.in AND test.in, hence generating dev.p4.out and test.p4.out for the chosen folder
 -----------------------------------------------------------------------
