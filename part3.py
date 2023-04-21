@@ -9,7 +9,67 @@ import sys
 from pathlib import Path
 from math import log
 from part1 import Emission
+def Counts(parent1, parent2, child, d):
+    """
+    Description:
+    Defining and incrementing the count of [parent2, parent1][child] in a dictionary d
+    """
+       # Increment the count of [parent1][parent2][child] in dictionary d
+    if parent1 in d:
+        if parent2 in d[parent1]:
+            if child in d[parent1][parent2]:
+                d[parent1][parent2][child] += 1
+            else:
+                d[parent1][parent2][child] = 1
+        else:
+            d[parent1][parent2] = {child: 1}
+    else:
+        d[parent1] = {parent2: {child: 1}}
 
+
+def Transition(data):
+    '''
+    transitions is a nested dictionary of the dict format -> { yi-2 : {yi-1: {yi : probability of transition from yi-2 to yi-1 to yi}}}
+    '''
+    start = ("_START1", "_START2")
+    stop = ("_STOP1", "_STOP2") 
+    transitions = {}
+    count = {start: 0}
+    prev_tags = start
+    with open(data, encoding="utf-8") as f:
+        for line in f:
+            sentence = line.strip()
+            # sentence has ended
+            if len(sentence) == 0:
+                Counts(prev_tags[0], prev_tags[1], stop, transitions)
+                prev_tags = start
+
+            # in the middle of a sentence
+            else:
+                space = sentence.rfind(" ")
+                curr_tag = sentence[space + 1:]
+                if prev_tags == start:
+                    count[start] += 1
+                if len(prev_tags) == 1:
+                    Counts(start, prev_tags[0], curr_tag, transitions)
+                else:
+                    Counts(prev_tags[0], prev_tags[1], curr_tag, transitions)
+
+                prev_tags = (prev_tags[1], curr_tag)
+
+    # Calculate transition probabilities 
+
+    for tags, currDict in transitions.items():   
+        for curr_tag, currCount in currDict.items():
+            total = sum(currDict[curr_tag].values())
+            if total != 0:
+                for prev_tag, prevDict in currDict.items():
+                    if prev_tag in currDict[curr_tag]:
+                        currDict[curr_tag][prev_tag] = currDict[curr_tag][prev_tag]/total
+
+    print(transitions)
+    return transitions
+'''
 def get_ngrams(words, n):
     """
     Extracts n-grams from a list of words
@@ -19,20 +79,6 @@ def get_ngrams(words, n):
     else:
         ngrams = [None]*(n-1-len(words)) + words
     return ngrams
-
-
-def Counts(parent1, parent2, child, d):
-    """
-    Description:
-    Defining and incrementing the count of [parent2, parent1][child] in a dictionary d
-    """
-    if (parent1, parent2) in d:
-        if child in d[(parent1, parent2)]:
-            d[(parent1, parent2)][child] += 1
-        else:
-            d[(parent1, parent2)][child] = 1
-    else:
-        d[(parent1, parent2)] = {child: 1}
 
 
 
@@ -58,7 +104,7 @@ def Transition(data):
                 if previous2:
                     Counts(previous2, previous1, current, count)  # change here
                 else:
-                    Counts(previous1, current, count)
+                    Counts('O', previous1, current, count)
 
                 # Update current word count
                 if current in currentdict:
@@ -76,7 +122,7 @@ def Transition(data):
 
     return transition
 
-
+'''
 def UniqVocab(file):
     """
     Description:
@@ -217,6 +263,7 @@ def main(args):
         start = time.time()
         emission = Emission(dir/'train')
         transition = Transition(dir/'train')
+        print(transition)
         vocab = UniqVocab(dir/'train')
         ViterbiPrediction(emission, transition, vocab,
                            dir/'dev.in', dir/'dev.p2.out')
